@@ -69,6 +69,7 @@
     <Compile Include="MenuBackground.xaml.cs">
       <DependentUpon>MenuBackground.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models.cs" />
     <Compile Include="PreGame.xaml.cs">
       <DependentUpon>PreGame.xaml</DependentUpon>
     </Compile>
@@ -132,6 +133,9 @@
     <None Include="bin\Debug\Assets\grid.ps" />
     <None Include="bin\Debug\Assets\Scenarios\Scenario1\1\options.json" />
     <None Include="bin\Debug\Assets\Scenarios\Scenario1\2\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\scenario.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario2\scenario.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario3\scenario.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -143,13 +147,10 @@
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\w.avi" />
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\bg.png" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\pre.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\scenario.txt" />
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario2\bg.png" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario2\pre.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario2\scenario.txt" />
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario3\bg.png" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario3\pre.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario3\scenario.txt" />
     <Content Include="shader\grid.fx" />
     <Content Include="shader\grid.ps" />
     <Resource Include="bin\Debug\Assets\logo.png">

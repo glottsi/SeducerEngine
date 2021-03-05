@@ -61,12 +61,6 @@ namespace WPF
             AddButtons();
         }
 
-        public class ButtonSchema
-        {
-            public ButtonType ButtonType;
-            public string Label;
-            public string VideoFilename;
-        }
 
         private void AddButtons()
         {
