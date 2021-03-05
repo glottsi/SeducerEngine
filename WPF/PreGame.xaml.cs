@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,12 +21,15 @@ namespace WPF
             BitmapImage bitmapImage = new BitmapImage(new Uri(Path.Combine(path, "bg.png")));
             BgImage.Source = bitmapImage;
 
-            StreamReader streamReader = new StreamReader(Path.Combine(path, "scenario.txt"));
-            string title = streamReader.ReadLine();
-            TitleLabel.Content = new TextBlock{ Text = title, TextWrapping = TextWrapping.Wrap };
-            string description = streamReader.ReadToEnd();
-            DescriptionLabel.Content = new TextBlock{ Text = description, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Left };
-            streamReader.Close();
+
+            // load the scenario from json file
+            using (StreamReader r = new StreamReader(Path.Combine(path, "scenario.json")))
+            {
+                string json = r.ReadToEnd();
+                ScenarioSchema scenario = JsonConvert.DeserializeObject<ScenarioSchema>(json);
+                TitleLabel.Content = new TextBlock { Text = scenario.Title, TextWrapping = TextWrapping.Wrap };
+                DescriptionLabel.Content = new TextBlock { Text = scenario.Description, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Left };
+            }
         }
 
         private void BackButtonClicked(object sender, RoutedEventArgs e)
