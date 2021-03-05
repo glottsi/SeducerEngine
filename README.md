@@ -39,31 +39,46 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
    |  scenario.txt
    |  1/
          | options.txt
-         | w.avi
-         | l.avi
-         | e.avi
+         | video1_or_whatever_name_you_want.avi
+         | video2.avi
+         | video3.avi
    |  2/
          | options.txt
-         | w.avi
-         | l.avi
-         | e.avi
+         | video1.avi
+         | video2.avi
+         | video_some_other_name.avi
    | etc...
 ```
-`bg.png` - the image to display on the Scenario select screen.
+`bg.png` -  _don't change the name_ - the image to display on the Scenario select screen.
 
-`pre.avi` - the first video file to play for this scenario. 
+`pre.avi` -  _don't change the name_ - the first video file to play for this scenario.
 
-`scenario.txt` - a text file containing the scenario title and description. The first line of the txt file will be read as the title, the remaining lines are read as the decription.
+`scenario.txt` -  _don't change the name_ - a text file containing the scenario title and description. The first line of the txt file will be read as the title, the remaining lines are read as the decription.
 
-`1/` - contains the choices and reaction videos for each
+`1/` -  _name the folders incrementally ie 1,2,3,4_ - folder to contains the choices and reaction videos for each.  _don't change the name_
 
-`1/options.txt` - the text to display as options. The first line is read as the Win (w) choice, the second line is the Lose (l) choice, and the third line is the End choice (ends the game).
+`1/options.json` -  _don't change the name_ - the json to build our buttons with, the object in this file is defined like this: 
 
-`1/w.avi` - the video to play when the Win choice (w) is selected.
-
-`1/l.avi` - the video to play when the Lose choice (l) is selected.
-
-`1/e.avi` - the video to play when the End choice (e) is selected.
+  ```
+ [
+   {
+    "ButtonType": "Win",
+    "Label": "say hi",
+    "VideoFilename": "say_hi.mp4"
+  },
+  {
+    "ButtonType": "Lose",
+    "Label": "say something dumb",
+    "VideoFilename": "loser.avi"
+  },
+  {
+    "ButtonType": "End",
+    "Label": "say something so terrible the game ends immidiately",
+    "VideoFilename": "gameover.avi"
+  }
+]
+  ```
+  **Note:** you can name the video files whatever you want, but make sure its the same as the VideoFilename in the `options.json`
 
 ## Considerations
 
