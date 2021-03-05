@@ -7,7 +7,8 @@ Demonstration of the game when running (assets are included in this repo):
 
 ## Change notes
 ### 03/05/21 
- - buttons are loaded from `options.json` files now and not the `.txt`. 
+ - buttons and scenarios are now loaded from `.json` files and not the `.txt`. 
+ - scenario json contains the Title and Description
  - the button json objects contain 3 attributes:
  
          ButtonType: can be either Win (+1 Point), Lose (-1 Health), or End (instant game over)
@@ -36,14 +37,14 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 /Scenario1
    |  bg.png
    |  pre.avi
-   |  scenario.txt
+   |  scenario.json
    |  1/
-         | options.txt
+         | options.json
          | video1_or_whatever_name_you_want.avi
          | video2.avi
          | video3.avi
    |  2/
-         | options.txt
+         | options.json
          | video1.avi
          | video2.avi
          | video_some_other_name.avi
@@ -55,7 +56,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
 `pre.avi` -  _don't change the name_ - the first video file to play for this scenario.
 
-`scenario.txt` -  _don't change the name_ - a text file containing the scenario title and description. The first line of the txt file will be read as the title, the remaining lines are read as the decription.
+`scenario.json` -  _don't change the name_ - a json file containing the scenario Title and Description.
 
 `1/` -  _name the folders incrementally ie 1,2,3,4_ - folder to contains the choices and reaction videos for each.
 
