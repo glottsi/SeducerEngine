@@ -49,13 +49,15 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
          | video_some_other_name.avi
    | etc...
 ```
+`/Scenario1` - the folder containing the required data and assets for the entire Scenario. _you can name this folder whatever you want_
+
 `bg.png` -  _don't change the name_ - the image to display on the Scenario select screen.
 
 `pre.avi` -  _don't change the name_ - the first video file to play for this scenario.
 
 `scenario.txt` -  _don't change the name_ - a text file containing the scenario title and description. The first line of the txt file will be read as the title, the remaining lines are read as the decription.
 
-`1/` -  _name the folders incrementally ie 1,2,3,4_ - folder to contains the choices and reaction videos for each.  _don't change the name_
+`1/` -  _name the folders incrementally ie 1,2,3,4_ - folder to contains the choices and reaction videos for each.
 
 `1/options.json` -  _don't change the name_ - the json to build our buttons with, the object in this file is defined like this: 
 
