@@ -5,6 +5,17 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 Demonstration of the game when running (assets are included in this repo):
 [https://www.youtube.com/watch?v=E3i96P9AGAs](https://www.youtube.com/watch?v=E3i96P9AGAs)
 
+## Change notes
+### 03/05/21 
+ - buttons are loaded from `options.json` files now and not the `.txt`. 
+ - the button json objects contain 3 attributes:
+ 
+         ButtonType: can be either Win (+1 Point), Lose (-1 Health), or End (instant game over)
+         Label: text to display on the button
+         VideoFilename: name of the file to be played after this button is chosen
+         
+ - we can now have more than 1 button for each type (for example we can have 2 Lose buttons that will play different videos each)
+
 ## Preparation
 
 You need Visual Studio 2019 to build the project.
@@ -56,17 +67,12 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
 ## Considerations
 
-- After playing a Win video, the game advances to the next choice.
-- After playing a Lose video, the game makes the user select another answer.
+- After playing a Win video, the game advances to the next choice and adds 1 point (we don't do anything with the point system currently).
+- After playing a Lose video, the game advances to the next choice, but reduces the Health by 1 point.
 - After an End video, the game displays the Game Over screen.
+- If Health reaches 0, game is over.
 - You win the game when there are no more numbered folders to progress to. If there are only 3 folders, after the 3rd choice is a W, the game displays the WinScreen. 
 - I added my own LoseScreen, because there wasn't one. The number of the losing condition is `-1`
-
-
-## Issues
-
-- We can only make one of each Win, Lose, and End choice. The engine **assigns button types based on the line number in the options.txt file**. First line is read as the Win, second line is read as the Lose, and the third is the End. We need to be develop this further to include more types of responses, and to add the ability to make more than a single button of each type. 
-
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
