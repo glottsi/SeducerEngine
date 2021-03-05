@@ -1,0 +1,17 @@
+[
+  {
+    "ButtonType": "Win",
+    "Label": "ask her to be your gf",
+    "VideoFilename": "w.avi"
+  },
+  {
+    "ButtonType": "Lose",
+    "Label": "do nothing and stand there",
+    "VideoFilename": "l.avi"
+  },
+  {
+    "ButtonType": "End",
+    "Label": "shit your pants with fear",
+    "VideoFilename": "e.avi"
+  }
+]

@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -127,15 +130,16 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="bin\Debug\Assets\grid.ps" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\1\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\2\options.json" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\e.avi" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\l.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\1\options.txt" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\w.avi" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\e.avi" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\l.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\2\options.txt" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\w.avi" />
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\bg.png" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\pre.avi" />

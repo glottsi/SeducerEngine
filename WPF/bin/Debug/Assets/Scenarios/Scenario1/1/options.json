@@ -1,0 +1,17 @@
+[
+  {
+    "ButtonType": "Win",
+    "Label": "say hi",
+    "VideoFilename": "w.avi"
+  },
+  {
+    "ButtonType": "Lose",
+    "Label": "say 'booba'",
+    "VideoFilename": "l.avi"
+  },
+  {
+    "ButtonType": "End",
+    "Label": "tell her she's ugly",
+    "VideoFilename": "e.avi"
+  }
+]

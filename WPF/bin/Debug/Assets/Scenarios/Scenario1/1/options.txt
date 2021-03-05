@@ -1,3 +1,0 @@
-say "Hi"
-say "BOOBA"
-tell her she is ugly

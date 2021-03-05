@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -60,24 +61,31 @@ namespace WPF
             AddButtons();
         }
 
+        public class ButtonSchema
+        {
+            public ButtonType ButtonType;
+            public string Label;
+            public string VideoFilename;
+        }
+
         private void AddButtons()
         {
             List<GameButton> gameButtons = new List<GameButton>();
-            using (StreamReader streamReader =
-                new StreamReader(Path.Combine(_path, _storyPosition.ToString(), "options.txt")))
+            // load the buttons from json file
+            using (StreamReader r = new StreamReader(Path.Combine(_path, _storyPosition.ToString(), "options.json")))
             {
-                foreach (ButtonType b in Enum.GetValues(typeof(ButtonType)))
+                string json = r.ReadToEnd();
+                List<ButtonSchema> items = JsonConvert.DeserializeObject<List<ButtonSchema>>(json);
+                foreach (var item in items)
                 {
-                    string[] paths = Directory.GetFiles(Path.Combine(_path, _storyPosition.ToString()),
-                        b.ToString().ToLower()[0] + "*.avi");
-                    foreach (string videoPath in paths)
-                    {
-                        GameButton gameButton = new GameButton(streamReader.ReadLine(), b, videoPath, ButtonClicked);
-                        gameButtons.Add(gameButton);
-                    }
+                    // will either be Win, Lose, or End
+                    string videoPath = Path.Combine(_path, _storyPosition.ToString(), item.VideoFilename);
+                    GameButton gameButton = new GameButton(item.Label, item.ButtonType, videoPath, ButtonClicked);
+                    gameButtons.Add(gameButton);
+      
                 }
             }
-
+          
             gameButtons.Shuffle();
             
             foreach (var gameButton in gameButtons)
@@ -97,8 +105,8 @@ namespace WPF
             _prevVideoPath = videoPath;
             _prevButtonType = buttonType;
 
-            if (MainResources.Scores.Count < _storyPosition)
-                MainResources.Scores.Add(buttonType != ButtonType.Lose);
+           // adds 1 score if it was a "Win" choice
+            MainResources.Scores.Add(buttonType == ButtonType.Win);
 
             _fadeIn.Stop();
             _fadeOut.Begin();
