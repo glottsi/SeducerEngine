@@ -8,3 +8,7 @@ obj/
 WPF/bin/Debug/WPF.exe
 WPF/bin/Debug/WPF.pdb
 WPF/bin/Debug/WPF.exe.config
+*.dll
+WPF/bin/Debug/Newtonsoft.Json.xml
+WPF/packages/*
+
