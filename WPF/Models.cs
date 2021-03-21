@@ -18,5 +18,12 @@ namespace WPF
         public ButtonType ButtonType;
         public string Label;
         public string VideoFilename;
+        public StoryPath Path;
+    }
+
+    public class StoryPath
+    {
+        public string Branch;
+        public int StartPosition;
     }
 }

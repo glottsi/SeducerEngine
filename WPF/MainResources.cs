@@ -8,6 +8,8 @@ namespace WPF
         public static MainWindow MainWindow;
         public static List<bool> Scores;
         private static int _LifePoints = 0;
+        private static string _Branch = "A";
+        private static int _PathPosition = 1;
 
         private static readonly Random Rand = new Random(Guid.NewGuid().GetHashCode());
         
@@ -36,6 +38,30 @@ namespace WPF
         public static int GetLifePoints()
         {
             return _LifePoints;
+        }
+
+        public static void SetBranch(string branch)
+        {
+           
+            _Branch = branch.ToUpper().Trim();
+            
+        }
+
+        public static string GetBranch()
+        {
+            return _Branch;
+        }
+
+        public static void SetPathPosition(int position)
+        {
+
+            _PathPosition = position;
+
+        }
+
+        public static int GetPathPosition()
+        {
+            return _PathPosition;
         }
     }
 }
