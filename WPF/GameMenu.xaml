@@ -27,19 +27,24 @@
             <RowDefinition Height="10*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        <Grid Grid.Column="3" Grid.Row="3">
+            <Label Name="HealthAndPositionLabel" Style="{StaticResource ButtonTextStyle}"
+                       />
+        </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
-            <Label Style="{StaticResource ButtonTextStyle}"
-                       Grid.Row="0">
-                What will you do?
-            </Label>
+            <Label Name="ChoiceLabel" Style="{StaticResource ButtonTextStyle}"
+                       Grid.Row="0"/>
+
+
             <StackPanel Name="ButtonStackPanel"
                         Grid.Row="2" />
+
+           
         </Grid>
     </Grid>
 </UserControl>

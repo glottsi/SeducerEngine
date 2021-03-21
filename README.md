@@ -2,10 +2,26 @@
 
 I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WWRS/SeducerEngine) which is a good base project, but the creator made no proper readme or explanation how to use it, and hasn't been updated in 2 years. So I'm attempting to provide more of an explanation to how it works, and what is required to add more Scenarios and choices. 
 
-Demonstration of the game when running (assets are included in this repo):
-[https://www.youtube.com/watch?v=E3i96P9AGAs](https://www.youtube.com/watch?v=E3i96P9AGAs)
 
 ## Change notes
+
+### 03/21/21
+ - branching system implemented
+ - default branch is A, but other branches can be named whatever you want
+ - HP and current path are displayed at the bottom of the select choice screen to help with debugging
+ - removed Scenario2 and Scenerio3 assets, and replaced the image for Scenario1
+ - remove youtube link (will make a new video later demonstrating this new version)
+ - button json object has changed and now resembles this: 
+
+            ButtonType: can be either Win (+1 Point), Lose (-1 Health), or End (instant game over),
+            Path: is null if you stay on the same branch (ie A2 to A3), else it needs to indicate the target branch and position: 
+            {
+              Branch: "B",
+              StartPosition: 1
+            },
+            Label: text to display on the button,
+            VideoFilename: name of the file to be played after this button is chosen
+
 ### 03/05/21 
  - buttons and scenarios are now loaded from `.json` files and not the `.txt`. 
  - scenario json contains the Title and Description
@@ -38,12 +54,17 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
    |  bg.png
    |  pre.avi
    |  scenario.json
-   |  1/
+   |  A1/
          | options.json
          | video1_or_whatever_name_you_want.avi
          | video2.avi
          | video3.avi
-   |  2/
+   |  A2/
+         | options.json
+         | video1.avi
+         | video2.avi
+         | video_some_other_name.avi
+   |  B1/
          | options.json
          | video1.avi
          | video2.avi
@@ -58,25 +79,31 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
 `scenario.json` -  _don't change the name_ - a json file containing the scenario Title and Description.
 
-`1/` -  _name the folders incrementally ie 1,2,3,4_ - folder to contains the choices and reaction videos for each.
+`A1/` -  _name the folders incrementally ie A1, A2, A3, B1, B2 ..._ - folder to contains the choices and reaction videos for each. the default branch is A, the game start on A branch at position 1 (A1)
 
-`1/options.json` -  _don't change the name_ - the json to build our buttons with, the object in this file is defined like this: 
+`A1/options.json` -  _don't change the name_ - the json to build our buttons with, the object in this file is defined like this: 
 
   ```
  [
    {
     "ButtonType": "Win",
-    "Label": "say hi",
-    "VideoFilename": "say_hi.mp4"
+    "Path": null, // if this choice will keep the player on the same branch, leave it null
+    "Label": "choice 1",
+    "VideoFilename": "choice1.mp4"
   },
   {
     "ButtonType": "Lose",
-    "Label": "say something dumb",
-    "VideoFilename": "loser.avi"
+    "Path": {
+      "Branch": "B", // the branch this choice will navigate us to
+      "StartPosition": "1" // the position in the branch to start at
+    },
+    "Label": "choice 2",
+    "VideoFilename": "choice2.avi"
   },
   {
     "ButtonType": "End",
-    "Label": "say something so terrible the game ends immidiately",
+    "Path": null,
+    "Label": "end the game",
     "VideoFilename": "gameover.avi"
   }
 ]

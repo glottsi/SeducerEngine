@@ -1,0 +1,20 @@
+[
+  {
+    "ButtonType": "Win",
+    "Path": null,
+    "Label": "continue",
+    "VideoFilename": "choice_a.avi"
+  },
+  {
+    "ButtonType": "Lose",
+    "Path": null,
+    "Label": "-1 HP and continue",
+    "VideoFilename": "choice_b.avi"
+  },
+  {
+    "ButtonType": "End",
+    "Path": null,
+    "Label": "game over",
+    "VideoFilename": "choice_c.avi"
+  }
+]

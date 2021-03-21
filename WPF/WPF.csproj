@@ -131,32 +131,40 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="bin\Debug\Assets\grid.ps" />
-    <None Include="bin\Debug\Assets\Scenarios\Scenario1\1\options.json" />
-    <None Include="bin\Debug\Assets\Scenarios\Scenario1\2\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\A1\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\A2\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\A3\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\B1\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\B2\options.json" />
+    <None Include="bin\Debug\Assets\Scenarios\Scenario1\C1\options.json" />
     <None Include="bin\Debug\Assets\Scenarios\Scenario1\scenario.json" />
-    <None Include="bin\Debug\Assets\Scenarios\Scenario2\scenario.json" />
-    <None Include="bin\Debug\Assets\Scenarios\Scenario3\scenario.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\e.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\l.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\1\w.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\e.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\l.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\2\w.avi" />
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\bg.png" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_c.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_d.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_c.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A3\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A3\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_c.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B2\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B2\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_a.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_b.avi" />
+    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_c.avi" />
     <Content Include="bin\Debug\Assets\Scenarios\Scenario1\pre.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario2\bg.png" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario2\pre.avi" />
-    <Resource Include="bin\Debug\Assets\Scenarios\Scenario3\bg.png" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario3\pre.avi" />
     <Content Include="shader\grid.fx" />
     <Content Include="shader\grid.ps" />
     <Resource Include="bin\Debug\Assets\logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="bin\Debug\Assets\MainBG.mp4" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

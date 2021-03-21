@@ -1,0 +1,26 @@
+[
+  {
+    "ButtonType": "Win",
+    "Path": {
+      "Branch": "A",
+      "StartPosition": "3"
+    },
+    "Label": "go to A3",
+    "VideoFilename": "choice_a.avi"
+  },
+  {
+    "ButtonType": "Win",
+    "Path": null,
+    "Label": "advance to next in C",
+    "VideoFilename": "choice_b.avi"
+  },
+  {
+    "ButtonType": "Win",
+    "Path": {
+      "Branch": "B",
+      "StartPosition": "1"
+    },
+    "Label": "go to B1",
+    "VideoFilename": "choice_c.avi"
+  }
+]

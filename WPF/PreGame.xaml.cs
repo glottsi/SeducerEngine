@@ -44,8 +44,12 @@ namespace WPF
             MainResources.Scores = new List<bool>();
             // life points represent the number of times a user can choose a wrong answer before losing the game
             MainResources.SetLifePoints(1);
+            // default branch is A
+            MainResources.SetBranch("A");
+            // default start position is 1 (A1)
+            MainResources.SetPathPosition(1);
             string startingVideo = Path.Combine(_path, "pre.avi");
-            GameMenu gameMenu = new GameMenu(_path, 1, startingVideo);
+            GameMenu gameMenu = new GameMenu(_path, MainResources.GetPathPosition(), startingVideo);
             MainResources.MainWindow.MainPanel.Children.Add(gameMenu);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
             MainResources.MainWindow.RemoveBackground();
