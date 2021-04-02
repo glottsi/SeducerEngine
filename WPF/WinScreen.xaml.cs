@@ -7,19 +7,21 @@ namespace WPF
 {
     public partial class WinScreen : UserControl
     {
+        private readonly Storyboard _fadeIn;
         public WinScreen(string videoPath)
         {
             InitializeComponent();
-            
+
+            _fadeIn = FindResource("FadeInStoryboard") as Storyboard;
+
+            Storyboard.SetTarget(_fadeIn, MainGrid);
+
             MainResources.MainWindow.PlayFile(videoPath, PrevVideoDone);
         }
         
         private void PrevVideoDone()
         {
-            Storyboard fadeIn = FindResource("FadeInStoryboard") as Storyboard;
-            Debug.Assert(fadeIn != null, nameof(fadeIn) + " != null");
-            Storyboard.SetTarget(fadeIn, MainGrid);
-            fadeIn.Begin();
+            _fadeIn.Begin();
             IsEnabled = true;
         }
 

@@ -1,5 +1,9 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace WPF
 {
@@ -26,5 +30,26 @@ namespace WPF
         {
             Application.Current.Shutdown();
         }
+
+        private void button_mainMenu_MouseEnter(object sender, MouseEventArgs e)
+
+        {
+
+            //ScenariosButton.Content = "Mouse Enter Event";
+
+          
+
+
+        }
+
+        private void button_mainMenu_MouseLeave(object sender, MouseEventArgs e)
+
+        {
+
+            //ScenariosButton.Content = "Scenarios";
+
+        }
+
+
     }
 }

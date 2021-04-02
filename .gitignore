@@ -12,3 +12,5 @@ WPF/bin/Debug/WPF.exe.config
 WPF/bin/Debug/Newtonsoft.Json.xml
 WPF/packages/*
 
+WPF/bin/Debug/Assets/*
+

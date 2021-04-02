@@ -5,32 +5,29 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 
 ## Change notes
 
+### 04/02/21
+  - changed button styling for the main menu, scenario selection, and choice buttons with an animated gradient effect
+  - removed Win and Lose button types, replaced them with Default. The only other button type is End will instantly lose the game (send to game over screen) after playing the video for the choice
+  - added a ScoreAdjustment object to the button schema so we can set any adjustments to HP or Points on button click
+  - added Endings array to the button schema, outlining the possible endings and the points required to view them
+  - ending system will play an ending video after playing the last choice video (and determining which video to play based off the score)
+  - made a new class ButtonData to wrap parameters to pass through to buttons, callbacks, etc
+  - added a top and bottom border to the choice button menu (like in super seducer screenshot)
+  - added a settings object to the scenario.json were we define the starting values for things such as HP, path, etc. 
+  - moved ButtonType into Models.cs and deleted the ButtonType.cs file
+
 ### 03/21/21
  - branching system implemented
  - default branch is A, but other branches can be named whatever you want
  - HP and current path are displayed at the bottom of the select choice screen to help with debugging
  - removed Scenario2 and Scenerio3 assets, and replaced the image for Scenario1
  - remove youtube link (will make a new video later demonstrating this new version)
- - button json object has changed and now resembles this: 
-
-            ButtonType: can be either Win (+1 Point), Lose (-1 Health), or End (instant game over),
-            Path: is null if you stay on the same branch (ie A2 to A3), else it needs to indicate the target branch and position: 
-            {
-              Branch: "B",
-              StartPosition: 1
-            },
-            Label: text to display on the button,
-            VideoFilename: name of the file to be played after this button is chosen
+ - button json object has changed
 
 ### 03/05/21 
  - buttons and scenarios are now loaded from `.json` files and not the `.txt`. 
  - scenario json contains the Title and Description
- - the button json objects contain 3 attributes:
- 
-         ButtonType: can be either Win (+1 Point), Lose (-1 Health), or End (instant game over)
-         Label: text to display on the button
-         VideoFilename: name of the file to be played after this button is chosen
-         
+ - the button json objects contain 3 attributes
  - we can now have more than 1 button for each type (for example we can have 2 Lose buttons that will play different videos each)
 
 ## Preparation
@@ -54,6 +51,10 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
    |  bg.png
    |  pre.avi
    |  scenario.json
+   |  endings/
+        | default_ending.avi
+        | bad_ending.avi
+        | good_ending.avi
    |  A1/
          | options.json
          | video1_or_whatever_name_you_want.avi
@@ -77,7 +78,22 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
 `pre.avi` -  _don't change the name_ - the first video file to play for this scenario.
 
-`scenario.json` -  _don't change the name_ - a json file containing the scenario Title and Description.
+`scenario.json` -  _don't change the name_ - a json file containing the scenario Title and Description, as well as the starting Settings for things such as HP and Points.
+
+```
+// scenario.json
+{
+  "Title": "Episode 1",
+  "Description": "Some text to describe the scenario...",
+  "Settings": {
+    "StartingHP": 3,
+    "StartingPoints": 0,
+    "StartingBranch": "A",
+    "StartingPathPosition": 1
+  }
+}
+
+```
 
 `A1/` -  _name the folders incrementally ie A1, A2, A3, B1, B2 ..._ - folder to contains the choices and reaction videos for each. the default branch is A, the game start on A branch at position 1 (A1)
 
@@ -85,39 +101,72 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
   ```
  [
+   // Default button (advance 1 in the storypath, no point adjustment)
    {
-    "ButtonType": "Win",
-    "Path": null, // if this choice will keep the player on the same branch, leave it null
     "Label": "choice 1",
     "VideoFilename": "choice1.mp4"
   },
+
+  // End game instantly (immidiately show the Lose screen after playing the choice video)
   {
-    "ButtonType": "Lose",
-    "Path": {
-      "Branch": "B", // the branch this choice will navigate us to
-      "StartPosition": "1" // the position in the branch to start at
-    },
+    "ButtonType": "End",
     "Label": "choice 2",
     "VideoFilename": "choice2.avi"
   },
+
+  // adjust points when button selected
   {
-    "ButtonType": "End",
-    "Path": null,
-    "Label": "end the game",
-    "VideoFilename": "gameover.avi"
+    "Label": "choice 1",
+    "ScoreAdjustment": {
+      "HP": 0,
+      "Points": 1
+    },
+    "VideoFilename": "choice1.mp4"
+  }
+
+  // decide an ending based on the points (play video, then play ending video)
+  {
+    "Label": "choice 1",
+     "Endings": [
+      {
+        "WhenPointsAreBetween": [ 0, 3 ],
+        "VideoFilename": "default_ending.mp4"
+      },
+      {
+        "WhenPointsAreBetween": [ 3, 8 ],
+        "VideoFilename": "normal_ending.avi"
+      },
+      {
+        "WhenPointsAreBetween": [ 8, 10 ],
+        "VideoFilename": "great_ending.avi"
+      }
+    ]
+    "VideoFilename": "choice1.mp4"
+  },
+
+  // change path to another Branch 
+  {
+    "Path": {
+      "Branch": "B",
+      "StartPosition": "1"
+    },
+    "Label": "jump to branch B1",
+    "VideoFilename": "choice_d.avi"
   }
 ]
+
+
   ```
-  **Note:** you can name the video files whatever you want, but make sure its the same as the VideoFilename in the `options.json`
 
 ## Considerations
 
-- After playing a Win video, the game advances to the next choice and adds 1 point (we don't do anything with the point system currently).
-- After playing a Lose video, the game advances to the next choice, but reduces the Health by 1 point.
-- After an End video, the game displays the Game Over screen.
+- After a Default button is selected and video played it adjusts any score values and branch/path, then game advances to the next choice.
+- After an End button is selected and video played, the Game Over screen is shown.
 - If Health reaches 0, game is over.
-- You win the game when there are no more numbered folders to progress to. If there are only 3 folders, after the 3rd choice is a W, the game displays the WinScreen. 
-- I added my own LoseScreen, because there wasn't one. The number of the losing condition is `-1`
+- You win the game when there are no more numbered folders to progress to, or if an Ending has been defined in the button's data. 
+- On a win, if there is no ending video defined, the game will play the choice video and then show the Win screen.
+- On a win, if there is only 1 Ending defined, it will play it regardless of the point value.
+- On a win, if there are multiple Endings defined, the player's Point value is used to determine the ending video to play.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

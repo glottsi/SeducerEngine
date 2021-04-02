@@ -3,54 +3,118 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid Margin="10,0"
           MouseDown="OnClick">
-        <Grid.Background>
-            <SolidColorBrush Color="#221133" Opacity="0" />
-        </Grid.Background>
-        <Grid.Triggers>
-            <EventTrigger RoutedEvent="Grid.MouseEnter">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
+
+        <Border BorderThickness="4" CornerRadius="5">
+            <Border.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <LinearGradientBrush>
+                                <GradientStop Color="DimGray" Offset="0.0" />
+                                <GradientStop Color="DimGray" Offset="0.5" />
+                                <GradientStop Color="DimGray" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard x:Name="borderAnimationStoryboard2">
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                From="DimGray" To="LightBlue" 
+                                                Duration="0:0:0.4"
+                                                AutoReverse="False"
+                                               />
+
+
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Color)"
+                                                From="DimGray" To="DeepSkyBlue" 
+                                                Duration="0:0:0.2"
+                                                AutoReverse="False"
+                                              />
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[2].(GradientStop.Color)"
+                                                From="DimGray" To="Blue" 
+                                                Duration="0:0:0.4"
+                                                AutoReverse="False"
+                                              />
+
+                                        <DoubleAnimation
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                                                From="0" To="1" Duration="0:0:0.5"
+                                                AutoReverse="True" RepeatBehavior="Forever"
+                                                />
+
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+
+                                <StopStoryboard BeginStoryboardName="borderAnimationStoryboard2"/>
+
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Resources>
+            <Grid>
+                <Grid.Background>
+                    <SolidColorBrush Color="#221133" Opacity="0" />
+                </Grid.Background>
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="Grid.MouseEnter">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
                                              To="0.5"
                                              Duration="0:0:0.5" />
-                            <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
+                                    <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
                                              From="0.5" To="0.4" AutoReverse="True"
                                              BeginTime="0:0:0.5" Duration="0:0:1" 
                                              RepeatBehavior="Forever"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
-            </EventTrigger>
-            <EventTrigger RoutedEvent="Grid.MouseLeave">
-                <EventTrigger.Actions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Grid.MouseLeave">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Opacity)"
                                              To="0"
                                              Duration="0:0:0.2" />
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger.Actions>
-            </EventTrigger>
-        </Grid.Triggers>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="10*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="10*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="20" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="20" />
+                </Grid.ColumnDefinitions>
 
-        <Image Name="BgImage"
+                <Image Name="BgImage"
                Grid.Column="1" Grid.Row="1" />
-        <Label Name="TitleLabel"
+                <Label Name="TitleLabel"
                    Grid.Column="1" Grid.Row="3"
                    Style="{StaticResource ButtonTextStyle}" />
+            </Grid>
+           
+        </Border>
+
+        
     </Grid>
 </UserControl>

@@ -14,20 +14,24 @@ namespace WPF
         private readonly string _branchPath;
         private readonly int _storyPosition;
 
-        private readonly Storyboard _fadeIn;
-        private readonly Storyboard _fadeOut;
+        private readonly Storyboard _fadeInStoryboards;
+        private readonly Storyboard _fadeOutStoryboards;
 
-        private ButtonType _prevButtonType;
-        private string _prevVideoPath;
+        private ButtonData _prevButtonData;
+
+        private bool _hasEndingVideo = false;
 
      
-        public GameMenu(string path, int storyPosition, string videoPath)
+        public GameMenu(string path, int storyPosition, ButtonData buttonData)
         {
+
+            string videoPath = buttonData.VideoFileLocation;
+
             // path for the current branch
             _branchPath = Path.Combine(path, MainResources.GetBranch() + storyPosition.ToString());
 
-            // if we are at -1 story position or no life points, it's game over
-            bool gameOver = MainResources.GetLifePoints() < 0;
+            // if we are at -1 story position or no HP, it's game over
+            bool gameOver = MainResources.GetHP() < 0;
             if (storyPosition == -1 || gameOver)
             {
                 // lost the game, show LoseScreen
@@ -37,41 +41,106 @@ namespace WPF
                 return;
             }
 
-            // if there are no more directories for the scenario, consider it a win
-            if (!Directory.Exists(_branchPath))
+            // win conditions
+            // 1. if there are no more folders along this story path
+            // 2. if the button data has an ending
+            if (!Directory.Exists(_branchPath) || buttonData.Endings.Count > 0)
             {
-                // show win screen
-                MainResources.MainWindow.MainPanel.Children.Add(new WinScreen(videoPath));
-                MainResources.MainWindow.MainPanel.Children.Remove(this);
-                return;
+               
+                if (buttonData.Endings.Count == 0)
+                {
+                    // no ending video specified, so just display the win screen after the video played
+                    WinScreen win = new WinScreen(videoPath);
+                    MainResources.MainWindow.MainPanel.Children.Add(win);
+                    MainResources.MainWindow.MainPanel.Children.Remove(this);
+                    return;
+                }
+
+                if (buttonData.Endings.Count == 1)
+                {
+                    // only 1 ending, play it (no point condition)
+                    _hasEndingVideo = true;
+                    string endVideoPath = Path.Combine(MainResources.GetEndingPathRoot(), buttonData.Endings[0].VideoFilename);
+                    MainResources.SetEndingVideoPath(endVideoPath);
+                }
+                else
+                {
+                 
+                    // determine which ending based on points
+                    int endingPoints = MainResources.GetPoints();
+                  
+                    foreach (Ending ending in buttonData.Endings)
+                    {
+                        // the first ending that matches the condition will be set as the ending (so consider the order of endings in the list)
+                        if (endingPoints >= ending.WhenPointsAreBetween[0] && endingPoints <= ending.WhenPointsAreBetween[1])
+                        {
+                            _hasEndingVideo = true;
+
+                            // set this ending to play after the choice video
+                            string endVideoPath = Path.Combine(MainResources.GetEndingPathRoot(), ending.VideoFilename);
+                            MainResources.SetEndingVideoPath(endVideoPath);
+                            break;
+                        }
+
+                    }
+
+                }
             }
 
             InitializeComponent();
+            _fadeInStoryboards = new Storyboard();
+            _fadeOutStoryboards = new Storyboard();
 
-            _fadeIn = FindResource("FadeInStoryboard") as Storyboard;
-           // Debug.Assert(_fadeIn != null, nameof(_fadeIn) + " != null");
-            Storyboard.SetTarget(_fadeIn, GameMenuGrid);
+            // setting fade in animations (not running them yet)
+            var fadeIn = FindResource("FadeInStoryboard") as Storyboard;
+            Storyboard.SetTarget(fadeIn, GameMenuGrid);
 
-            _fadeOut = FindResource("FadeOutStoryboard") as Storyboard;
-          //  Debug.Assert(_fadeOut != null, nameof(_fadeOut) + " != null");
-            _fadeOut.Completed += NextVideoStart;
-            Storyboard.SetTarget(_fadeOut, GameMenuGrid);
+            var fadeIn2 = FindResource("FadeInStoryboard2") as Storyboard;
+            Storyboard.SetTarget(fadeIn2, ChoiceMenuBorder);
+
+            var fadeOut = FindResource("FadeOutStoryboard") as Storyboard;
+            // sets the callback when storyboard (choices) have faded out
+            fadeOut.Completed += NextVideoStart;
+            Storyboard.SetTarget(fadeOut, GameMenuGrid);
+
+            var fadeOut2 = FindResource("FadeOutStoryboard2") as Storyboard;
+            Storyboard.SetTarget(fadeOut2, ChoiceMenuBorder);
+
+           
+            _fadeInStoryboards.Children.Add(fadeIn);
+            _fadeInStoryboards.Children.Add(fadeIn2);
+
+            _fadeOutStoryboards.Children.Add(fadeOut);
+            _fadeOutStoryboards.Children.Add(fadeOut2);
 
             _scenarioPath = path;
             _storyPosition = storyPosition;
 
-            MainResources.MainWindow.PlayFile(videoPath, PrevVideoDone);
-       
-            AddButtons();
+            // callback to invoke after the video is played
+            Action afterVideoPlayed = PrevVideoDone;
+
+            if (_hasEndingVideo == true)
+            {
+                // change the callback to play the ending video after this one is finished
+                afterVideoPlayed = PlayEndingVideo;
+                _hasEndingVideo = false;
+            } else
+            {
+                // if we are not playing the ending video, we must be continuing the game, so add the choice buttons
+                AddButtons();
+            }
+
+            // now play the video, and invoke the callback after it's played
+            MainResources.MainWindow.PlayFile(videoPath, afterVideoPlayed);
         }
 
 
         private void AddButtons()
         {
             List<GameButton> gameButtons = new List<GameButton>();
-          
-            string branchPath = Path.Combine(_branchPath, "options.json");
+
             // load the buttons from json file
+            string branchPath = Path.Combine(_branchPath, "options.json");
             using (StreamReader r = new StreamReader(branchPath))
             {
                 string json = r.ReadToEnd();
@@ -84,6 +153,17 @@ namespace WPF
                         Branch = MainResources.GetBranch(),
                         StartPosition = _storyPosition
                     };
+
+                    // set default score adjustments
+                    ScoreAdjustment scoreAdjustment = new ScoreAdjustment
+                    {
+                        HP = 0,
+                        Points = 0
+                    };
+
+                    // default empty ending list
+                    List<Ending> endings = new List<Ending>();
+
                     // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
                     string videoPath = Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition, item.VideoFilename);
 
@@ -94,60 +174,94 @@ namespace WPF
                         storyPath.Branch = item.Path.Branch;
                         storyPath.StartPosition = item.Path.StartPosition;
                     }
-                
-                    GameButton gameButton = new GameButton(item.Label, item.ButtonType, storyPath, videoPath, ButtonClicked);
+
+                    if (item.ScoreAdjustment != null)
+                    {
+                        scoreAdjustment.HP = item.ScoreAdjustment.HP;
+                        scoreAdjustment.Points = item.ScoreAdjustment.Points;
+                    }
+
+                    if (item.Endings != null)
+                    {
+                        endings = item.Endings;
+                    }
+
+                    // wrap the data in a class we can pass easier
+                    ButtonData buttonData = new ButtonData()
+                    {
+                        ButtonType = item.ButtonType,
+                        VideoFileLocation = videoPath,
+                        StoryPath = storyPath,
+                        ScoreAdjustment = scoreAdjustment,
+                        Endings = endings
+                    };
+                    GameButton gameButton = new GameButton(item.Label, buttonData, ButtonClicked);
                     gameButtons.Add(gameButton);
       
                 }
             }
-            // set the label shown at the top of the choices (to be made dynamic in a future update)
-            ChoiceLabel.Content = "Make a choice:";
-            // display the current HP, branch and position (for debugging)
-            HealthAndPositionLabel.Content = "Path: " + MainResources.GetBranch() + _storyPosition+ "\nHP: " + MainResources.GetLifePoints();
 
             gameButtons.Shuffle();
+
+            // making 2 columns with multiple rows for the buttons
+            int buttonPos = 0;
             foreach (var gameButton in gameButtons)
-                ButtonStackPanel.Children.Add(gameButton);
+            {
+                if(buttonPos == 0 || buttonPos == 2 || buttonPos == 4)
+                {
+                    ButtonStackPanel.Children.Add(gameButton);
+                 
+                }
+                else
+                {
+                    ButtonStackPanel2.Children.Add(gameButton);
+                }
+                buttonPos += 1;
+            }
+
+            // Debug logging
+            // display the current HP, points, branch and position on the choice menu 
+            HealthAndPositionLabel.Content = $"{MainResources.GetBranch()}{_storyPosition} | HP:{MainResources.GetHP()} Pts:{MainResources.GetPoints()}";
+        }
+
+        private void PlayEndingVideo()
+        {
+            WinScreen win = new WinScreen(MainResources.GetEndingVideoPath());
+            MainResources.MainWindow.MainPanel.Children.Add(win);
+            MainResources.MainWindow.MainPanel.Children.Remove(this);
         }
 
         private void PrevVideoDone()
         {
-            _fadeIn.Begin();
+            _fadeInStoryboards.Begin();
             IsEnabled = true;
         }
 
-        private void ButtonClicked(ButtonType buttonType, StoryPath nextPath, string videoPath)
+        private void ButtonClicked(ButtonData buttonData)
         {
             IsEnabled = false;
 
-            _prevVideoPath = videoPath;
-            _prevButtonType = buttonType;
-
-            if(nextPath.Branch != MainResources.GetBranch())
+            if(buttonData.StoryPath.Branch != MainResources.GetBranch())
             {
-                MainResources.SetBranch(nextPath.Branch);
-                MainResources.SetPathPosition(nextPath.StartPosition - 1);
+                MainResources.SetBranch(buttonData.StoryPath.Branch);
+                MainResources.SetPathPosition(buttonData.StoryPath.StartPosition - 1);
             }
-          
-            _fadeIn.Stop();
-            _fadeOut.Begin();
+
+            _prevButtonData = buttonData;
+            _fadeInStoryboards.Stop();
+            _fadeOutStoryboards.Begin();
         }
 
         private void NextVideoStart(object sender, EventArgs e)
         {
-            GameMenu nextGameMenu;
             // by default we advance the position by 1
             int nextStoryPosition = MainResources.GetPathPosition() + 1;
 
-            switch (_prevButtonType)
+            switch (_prevButtonData.ButtonType)
             {
-                case ButtonType.Win:
-                    // adds 1 score if it was a "Win" choice
-                    MainResources.Scores.Add(true);
-                    break;
-                case ButtonType.Lose:
-                    // a "Lose" button type will reduce the life points
-                    MainResources.ReduceLifePoints(1);
+                case ButtonType.Default:
+                    MainResources.AdjustHP(_prevButtonData.ScoreAdjustment.HP);
+                    MainResources.AdjustPoints(_prevButtonData.ScoreAdjustment.Points);
                     break;
                 case ButtonType.End:
                     // an "End" button type will end the game immidiately
@@ -157,7 +271,7 @@ namespace WPF
                     break;
             }
 
-            nextGameMenu = new GameMenu(_scenarioPath, nextStoryPosition, _prevVideoPath);
+            GameMenu nextGameMenu = new GameMenu(_scenarioPath, nextStoryPosition, _prevButtonData);
             MainResources.MainWindow.MainPanel.Children.Add(nextGameMenu);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
             MainResources.SetPathPosition(nextStoryPosition);

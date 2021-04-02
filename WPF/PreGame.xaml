@@ -32,19 +32,139 @@
                    Style="{StaticResource ButtonTextStyle}"
                    HorizontalAlignment="Left" VerticalAlignment="Top"
                    Grid.Column="5" Grid.Row="3" Grid.ColumnSpan="3" />
-        <Button Style="{StaticResource ButtonStyle}"
-                Click="BackButtonClicked"
-                Grid.Column="2" Grid.Row="5">
-            <Label Style="{StaticResource ButtonTextStyle}">
-                &lt; Back
-            </Label>
-        </Button>
-        <Button Style="{StaticResource ButtonStyle}"
+
+        <Border BorderThickness="4" CornerRadius="5" Grid.Column="2" Grid.Row="5">
+            <Border.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <LinearGradientBrush>
+                                <GradientStop Color="DarkGray" Offset="0.0" />
+                                <GradientStop Color="DarkGray" Offset="0.5" />
+                                <GradientStop Color="DarkGray" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard x:Name="borderAnimationStoryboard2">
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                From="DarkGray" To="DeepPink" 
+                                                Duration="0:0:0.3"
+                                                AutoReverse="False"
+                                               />
+
+
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Color)"
+                                                From="DarkGray" To="Yellow" 
+                                                Duration="0:0:0.2"
+                                                AutoReverse="False"
+                                              />
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[2].(GradientStop.Color)"
+                                                From="DarkGray" To="Purple" 
+                                                Duration="0:0:0.3"
+                                                AutoReverse="False"
+                                              />
+
+                                        <DoubleAnimation
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                                                From="0" To="1" Duration="0:0:5"
+                                                AutoReverse="True" RepeatBehavior="Forever"
+                                                />
+
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+
+                                <StopStoryboard BeginStoryboardName="borderAnimationStoryboard2"/>
+
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Resources>
+
+            <Button Style="{StaticResource BackButtonStyle}"
+                Click="BackButtonClicked">
+                <Label Style="{StaticResource ButtonTextStyle}">
+                    &lt; Back
+                </Label>
+            </Button>
+        </Border>
+
+        <Border BorderThickness="4" CornerRadius="5" Grid.Column="6" Grid.Row="5">
+            <Border.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush">
+                        <Setter.Value>
+                            <LinearGradientBrush>
+                                <GradientStop Color="DarkGray" Offset="0.0" />
+                                <GradientStop Color="DarkGray" Offset="0.5" />
+                                <GradientStop Color="DarkGray" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard x:Name="borderAnimationStoryboard2">
+                                    <Storyboard>
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[0].(GradientStop.Color)"
+                                                From="DarkGray" To="DarkGreen" 
+                                                Duration="0:0:0.3"
+                                                AutoReverse="False"
+                                               />
+
+
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Color)"
+                                                From="DarkGray" To="YellowGreen" 
+                                                Duration="0:0:0.2"
+                                                AutoReverse="False"
+                                              />
+                                        <ColorAnimation 
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[2].(GradientStop.Color)"
+                                                From="DarkGray" To="DarkGreen" 
+                                                Duration="0:0:0.3"
+                                                AutoReverse="False"
+                                              />
+
+                                        <DoubleAnimation
+                                                Storyboard.TargetProperty="BorderBrush.(GradientBrush.GradientStops)[1].(GradientStop.Offset)"
+                                                From="0" To="1" Duration="0:0:5"
+                                                AutoReverse="True" RepeatBehavior="Forever"
+                                                />
+
+
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+
+                                <StopStoryboard BeginStoryboardName="borderAnimationStoryboard2"/>
+
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Resources>
+            <Button Style="{StaticResource PlayButtonStyle}"
                 Click="PlayButtonClicked"
-                Grid.Column="6" Grid.Row="5">
-            <Label Style="{StaticResource ButtonTextStyle}">
-                Play &gt;
-            </Label>
-        </Button>
+                >
+                <Label Style="{StaticResource ButtonTextStyle}">
+                    Play &gt;
+                </Label>
+            </Button>
+        </Border>
+
+      
     </Grid>
 </UserControl>

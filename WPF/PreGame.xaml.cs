@@ -11,6 +11,7 @@ namespace WPF
     public partial class PreGame : UserControl
     {
         private readonly string _path;
+        private readonly ScenarioSettings _settings;
 
         public PreGame(string path)
         {
@@ -21,7 +22,6 @@ namespace WPF
             BitmapImage bitmapImage = new BitmapImage(new Uri(Path.Combine(path, "bg.png")));
             BgImage.Source = bitmapImage;
 
-
             // load the scenario from json file
             using (StreamReader r = new StreamReader(Path.Combine(path, "scenario.json")))
             {
@@ -29,6 +29,10 @@ namespace WPF
                 ScenarioSchema scenario = JsonConvert.DeserializeObject<ScenarioSchema>(json);
                 TitleLabel.Content = new TextBlock { Text = scenario.Title, TextWrapping = TextWrapping.Wrap };
                 DescriptionLabel.Content = new TextBlock { Text = scenario.Description, TextWrapping = TextWrapping.Wrap, TextAlignment = TextAlignment.Left };
+
+                // prepare the scenario's settings to be loaded
+                _settings = scenario.Settings;
+             
             }
         }
 
@@ -41,15 +45,22 @@ namespace WPF
 
         private void PlayButtonClicked(object sender, RoutedEventArgs e)
         {
-            MainResources.Scores = new List<bool>();
-            // life points represent the number of times a user can choose a wrong answer before losing the game
-            MainResources.SetLifePoints(1);
-            // default branch is A
-            MainResources.SetBranch("A");
-            // default start position is 1 (A1)
-            MainResources.SetPathPosition(1);
-            string startingVideo = Path.Combine(_path, "pre.avi");
-            GameMenu gameMenu = new GameMenu(_path, MainResources.GetPathPosition(), startingVideo);
+            // confirm the scenario, loads the settings into mainresources
+            MainResources.SetHP(_settings.StartingHP);
+            MainResources.SetBranch(_settings.StartingBranch);
+            MainResources.SetPathPosition(_settings.StartingPathPosition);
+            MainResources.SetPoints(_settings.StartingPoints);
+      
+            // sets the folder path where we store all the ending videos
+            MainResources.SetEndingPathRoot(Path.Combine(_path,"endings"));
+
+            ButtonData buttonData = new ButtonData()
+            {
+                VideoFileLocation = Path.Combine(_path, "pre.avi"),
+                Endings = new List<Ending>()
+            };
+
+            GameMenu gameMenu = new GameMenu(_path, MainResources.GetPathPosition(), buttonData);
             MainResources.MainWindow.MainPanel.Children.Add(gameMenu);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
             MainResources.MainWindow.RemoveBackground();
