@@ -17,6 +17,7 @@ namespace WPF
     public class ScenarioSchema
     {
         public string Title;
+        public string Subtitle;
         public string Description;
         public ScenarioSettings Settings;
     }

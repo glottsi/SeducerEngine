@@ -13,7 +13,37 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
 
-       
+        <Style x:Key="ScenarioSelectTitleStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Comic Sans MS" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+            <Setter Property="TextBlock.FontSize" Value="48"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="ScenarioBlockTitleTextStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="Candara" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+            <Setter Property="TextBlock.FontSize" Value="24"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+
+        <Style x:Key="ScenarioBlockSubtitleTextStyle" TargetType="Label">
+            <Setter Property="FontFamily" Value="Candara" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
+            <Setter Property="TextBlock.FontSize" Value="15"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Background">
                 <Setter.Value>
@@ -359,13 +389,13 @@
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Horizontal">
                     <Setter Property="Width" Value="Auto" />
-                    <Setter Property="Height" Value="40" />
+                    <Setter Property="Height" Value="25" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ScrollBar">
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="1*" />
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
@@ -377,9 +407,9 @@
                                         <Track.Thumb>
                                             <Thumb Style="{StaticResource ScrollBarThumb}"
                                                    Margin="0,1,0,1"
-                                                   Background="#2a111a"
+                                                   Background="#19334d"
                                                    BorderThickness="5"
-                                                   BorderBrush="#441133"/>
+                                                   BorderBrush="#264d73"/>
                                         </Track.Thumb>
                                     </Track>
                                 </Grid>

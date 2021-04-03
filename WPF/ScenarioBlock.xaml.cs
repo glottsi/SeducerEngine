@@ -28,6 +28,7 @@ namespace WPF
                 string json = r.ReadToEnd();
                 ScenarioSchema scenario = JsonConvert.DeserializeObject<ScenarioSchema>(json);
                 TitleLabel.Content = new TextBlock { Text = scenario.Title, TextWrapping = TextWrapping.Wrap };
+                SubTitleLabel.Content = new TextBlock { Text = scenario.Subtitle, TextWrapping = TextWrapping.Wrap };
             }
         }
 
