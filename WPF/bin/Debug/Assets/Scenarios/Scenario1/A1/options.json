@@ -1,29 +1,49 @@
 [
   {
-    "ButtonType": "Win",
-    "Path": null,
-    "Label": "continue",
-    "VideoFilename": "choice_a.avi"
+    "Label": "add 1 point and continue",
+    "ScoreAdjustment": {
+      "HP": 0,
+      "Points": 1
+    },
+    "VideoFilename": "A1choice1.avi"
   },
   {
-    "ButtonType": "Lose",
-    "Path":  null,
     "Label": "-1 HP and continue",
-    "VideoFilename": "choice_b.avi"
+    "ScoreAdjustment": {
+      "HP": -1,
+      "Points": 0
+    },
+    "VideoFilename": "A1choice2.avi"
   },
   {
     "ButtonType": "End",
-    "Path": null,
-    "Label": "game over",
-    "VideoFilename": "choice_c.avi"
+    "Label": "single ending",
+    "VideoFilename": "A1choice3.avi"
   },
   {
-    "ButtonType": "Win",
+    "Label": "end game multiple endings",
+    "VideoFilename": "A1choice4.avi",
+    "Endings": [
+      {
+        "WhenPointsAreBetween": [ 0, 3 ],
+        "VideoFilename": "badending.avi"
+      },
+      {
+        "WhenPointsAreBetween": [ 3, 8 ],
+        "VideoFilename": "goodending.avi"
+      }
+    ]
+  },
+  {
+    "ScoreAdjustment": {
+      "HP": 0,
+      "Points": 1
+    },
     "Path": {
       "Branch": "B",
       "StartPosition": "1"
     },
     "Label": "jump to branch B1",
-    "VideoFilename": "choice_d.avi"
+    "VideoFilename": "A1choice5.avi"
   }
 ]

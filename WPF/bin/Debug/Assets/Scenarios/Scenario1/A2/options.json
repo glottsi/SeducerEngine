@@ -1,20 +1,19 @@
 [
   {
-    "ButtonType": "Win",
-    "Path": null,
     "Label": "continue",
-    "VideoFilename": "choice_a.avi"
+    "VideoFilename": "A2choice1.avi"
   },
   {
-    "ButtonType": "Lose",
-    "Path": null,
     "Label": "-1 HP and continue",
-    "VideoFilename": "choice_b.avi"
+    "ScoreAdjustment": {
+      "HP": -1,
+      "Points": 0
+    },
+    "VideoFilename": "A2choice2.avi"
   },
   {
     "ButtonType": "End",
-    "Path": null,
     "Label": "game over",
-    "VideoFilename": "choice_c.avi"
+    "VideoFilename": "A2choice3.avi"
   }
 ]

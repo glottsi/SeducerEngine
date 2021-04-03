@@ -1,14 +1,10 @@
 [
   {
-    "ButtonType": "Win",
-    "Path": null,
-    "Label": "continue",
-    "VideoFilename": "choice_a.avi"
+    "Label": "choice 1",
+    "VideoFilename": "A3choice1.avi"
   },
   {
-    "ButtonType": "Lose",
-    "Path": null,
-    "Label": "-1 HP and continue",
-    "VideoFilename": "choice_b.avi"
+    "Label": "choice 2",
+    "VideoFilename": "A3choice2.avi"
   }
 ]

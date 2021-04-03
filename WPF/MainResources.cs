@@ -7,9 +7,14 @@ namespace WPF
     {
         public static MainWindow MainWindow;
         public static List<bool> Scores;
-        private static int _LifePoints = 0;
-        private static string _Branch = "A";
-        private static int _PathPosition = 1;
+
+        private static int _HP;
+        private static int _Points;
+        private static string _Branch;
+        private static int _PathPosition;
+
+        private static string _endingRootPath;
+        private static string _endingVideoPath;
 
         private static readonly Random Rand = new Random(Guid.NewGuid().GetHashCode());
         
@@ -25,19 +30,69 @@ namespace WPF
             }
         }
 
-        public static void ReduceLifePoints(int amount)
+        public static void SetScenarioSettings(ScenarioSettings settings)
         {
-            _LifePoints -= amount;
+            
+            _HP = settings.StartingHP;
+            _Points = settings.StartingPoints;
+            _Branch = settings.StartingBranch;
+            _PathPosition = settings.StartingPathPosition;
         }
 
-        public static void SetLifePoints(int amount)
+        public static void ClearScenarioSettings()
         {
-            _LifePoints = amount;
+
         }
 
-        public static int GetLifePoints()
+
+        public static string GetEndingVideoPath()
         {
-            return _LifePoints;
+            return _endingVideoPath;
+        }
+
+        public static void SetEndingVideoPath(string path)
+        {
+            _endingVideoPath = path;
+        }
+
+        public static void SetEndingPathRoot(string path)
+        {
+            _endingRootPath = path;
+        }
+
+        public static string GetEndingPathRoot()
+        {
+            return _endingRootPath;
+        }
+
+        public static void AdjustPoints(int amount)
+        {
+            _Points += amount;
+        }
+
+        public static void SetPoints(int amount)
+        {
+            _Points = amount;
+        }
+
+        public static int GetPoints()
+        {
+            return _Points;
+        }
+
+        public static void AdjustHP(int amount)
+        {
+            _HP += amount;
+        }
+
+        public static void SetHP(int amount)
+        {
+            _HP = amount;
+        }
+
+        public static int GetHP()
+        {
+            return _HP;
         }
 
         public static void SetBranch(string branch)

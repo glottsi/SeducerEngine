@@ -9,6 +9,7 @@ namespace WPF
         private readonly DevLogos _devLogos;
 
         private Action _callback;
+        private Action _callback1;
         private bool _video1 = true;
 
         private readonly MenuBackground _menuBackground;
@@ -31,7 +32,14 @@ namespace WPF
 
         public void PlayFile(string videoPath, Action callback)
         {
-            _callback = callback;
+            if(_callback == null)
+            {
+                _callback = callback;
+            }else
+            {
+                _callback1 = callback;
+            }
+         
 
             if (_video1)
                 VideoMediaElement1.Source = new Uri(videoPath);
@@ -59,8 +67,17 @@ namespace WPF
 
         private void MediaEnded(object sender, EventArgs e)
         {
-            _callback.Invoke();
-            _callback = null;
+            if (_callback == null)
+            {
+                _callback1.Invoke();
+                _callback1 = null;
+            }
+            else
+            {
+                _callback.Invoke();
+                _callback = null;
+            }
+           
         }
 
         private void DevLogosDone()

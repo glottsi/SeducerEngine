@@ -1,4 +1,11 @@
 {
   "Title": "Episode 1",
-  "Description": "Some text to describe the scenario..."
+  "Description": "Some text to describe the scenario...",
+  "Settings": {
+    "StartingHP": 3,
+    "StartingPoints": 0,
+    "StartingBranch": "A",
+    "StartingPathPosition": 1
+  }
+ 
 }

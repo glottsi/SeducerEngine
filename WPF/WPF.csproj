@@ -54,7 +54,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BaseConverter.cs" />
-    <Compile Include="ButtonType.cs" />
     <Compile Include="GameButton.xaml.cs">
       <DependentUpon>GameButton.xaml</DependentUpon>
     </Compile>
@@ -142,24 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="bin\Debug\Assets\Scenarios\Scenario1\bg.png" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_c.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A1\choice_d.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A2\choice_c.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A3\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\A3\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B1\choice_c.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B2\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\B2\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_a.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_b.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\C1\choice_c.avi" />
-    <Content Include="bin\Debug\Assets\Scenarios\Scenario1\pre.avi" />
     <Content Include="shader\grid.fx" />
     <Content Include="shader\grid.ps" />
     <Resource Include="bin\Debug\Assets\logo.png">
