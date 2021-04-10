@@ -17,7 +17,7 @@ namespace WPF
 
             _callback = callback;
             
-            Img.Source = new BitmapImage(new Uri(Path.Combine("file:///", Directory.GetCurrentDirectory(), @"Assets\logo.png")));
+            Img.Source = new BitmapImage(new Uri(Path.Combine("file:///", Directory.GetCurrentDirectory(), @"Assets\dev_logo.png")));
         }
 
         private void FadeComplete(object sender, EventArgs e)

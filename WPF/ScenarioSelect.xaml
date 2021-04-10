@@ -4,15 +4,19 @@
              xmlns:wpf="clr-namespace:WPF">
 
     <Border
-                BorderThickness="0,2,0,2"
+                BorderThickness="0,6,0,6"
                 Grid.Row="1">
 
         <Border.BorderBrush>
-            <LinearGradientBrush Opacity="1">
-                <GradientStop Color="#393946" Offset="0"/>
-                <GradientStop Color="#9933ff" Offset="0.5"/>
-
-                <GradientStop Color="#393946" Offset="1"/>
+            <LinearGradientBrush Opacity="1" StartPoint="0,0.5" EndPoint="1,0.5">
+                <GradientStop Color="White" Offset="0"/>
+                <GradientStop Color="Black" Offset="0.1"/>
+            
+                <GradientStop Color="DarkBlue" Offset="0.4"/>
+                <GradientStop Color="DarkRed" Offset="0.6"/>
+              
+                <GradientStop Color="Black" Offset="0.9"/>
+                <GradientStop Color="White" Offset="1"/>
 
             </LinearGradientBrush>
         </Border.BorderBrush>
@@ -26,7 +30,7 @@
 
             </Grid.RowDefinitions>
 
-            <Border BorderThickness="0,2,0,2" Grid.Row="1">
+            <Border BorderThickness="0,4,0,4" Grid.Row="1">
                 <Border.BorderBrush>
                     <LinearGradientBrush Opacity="1">
                         <GradientStop Color="#393946" Offset="0"/>
@@ -60,13 +64,13 @@
                         <TextBlock Grid.Row="0" Style="{StaticResource ScenarioSelectTitleStyle}" Text="CHAPTER SELECT">
 
                         </TextBlock>
-                        <Border Grid.Row="1" BorderThickness="0,2,0,0">
+                        <Border Grid.Row="1" BorderThickness="0,4,0,0" Margin="128,0,128,0">
                             <Border.BorderBrush>
                                 <LinearGradientBrush Opacity="0.9">
-                                    <GradientStop Color="#000033" Offset="0"/>
-                                    <GradientStop Color="#3366ff" Offset="0.5"/>
+                                    <GradientStop Color="#393946" Offset="0"/>
+                                    <GradientStop Color="#505062" Offset="0.5"/>
+                                    <GradientStop Color="#393946" Offset="1"/>
 
-                                    <GradientStop Color="#000033" Offset="1"/>
 
                                 </LinearGradientBrush>
                             </Border.BorderBrush>

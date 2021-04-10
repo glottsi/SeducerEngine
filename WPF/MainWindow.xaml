@@ -5,9 +5,9 @@
         WindowState="Maximized"
         WindowStyle="None"
         KeyDown="OnKeyDownHandler">
-    <Grid Name="MainPanel"
-          Background="Black">
-        
+
+    <Grid Name="MainPanel" Background="Black">
+
         <MediaElement Name="VideoMediaElement1"
                       LoadedBehavior="Play"
                       MediaEnded="MediaEnded" />
