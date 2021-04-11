@@ -91,6 +91,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 // scenario.json
 {
   "Title": "Episode 1",
+  "Subtitle": "subtitle for the scenario"
   "Description": "Some text to describe the scenario...",
   "Settings": {
     "StartingHP": 3,
@@ -117,6 +118,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
   // End game instantly (immidiately show the Lose screen after playing the choice video)
   {
     "ButtonType": "End",
+    "LoseScreenMessage": "GG"
     "Label": "choice 2",
     "VideoFilename": "choice2.avi"
   },
