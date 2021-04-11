@@ -25,13 +25,11 @@
             <RowDefinition Height="5*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="1"
+        <Label x:Name="DisplayMessage" Grid.Column="1" Grid.Row="1"
                Style="{StaticResource ButtonTextStyle}">
             You win!
         </Label>
-        <Button Grid.Column="1" Grid.Row="3"
-                Style="{StaticResource ButtonStyle}"
-                Click="ButtonClicked">
+        <Button Grid.Column="1" Grid.Row="3" Style="{StaticResource ButtonStyle}" Click="ButtonClicked">
             <Label Style="{StaticResource ButtonTextStyle}">
                 Back to main menu
             </Label>

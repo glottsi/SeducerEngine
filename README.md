@@ -5,6 +5,13 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 
 ## Change notes
 
+### 04/10/21
+  - buttons can have an `EndScreenMessage` that will display on the ending screen if that option ends the game. If no message is specified (or if it is null), it will use a default message for that screen.
+  - added a game settings screen (no settings yet)
+  - added a 'Press any key' screen that is displayed before the main menu
+  - added BGM to the main menus and intros (until the actual scenario video is started)
+  - made the dev logos screen show a full-page image instead of small logo and text
+
 ### 04/02/21
   - changed button styling for the main menu, scenario selection, and choice buttons with an animated gradient effect
   - removed Win and Lose button types, replaced them with Default. The only other button type is End will instantly lose the game (send to game over screen) after playing the video for the choice

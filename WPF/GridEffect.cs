@@ -27,7 +27,7 @@ namespace WPF
         {
             PixelShader = new PixelShader
             {
-                UriSource = new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/grid.ps"))
+                UriSource = new Uri(Path.Combine(Directory.GetCurrentDirectory(), "Assets/background_shader.ps"))
             };
 
             UpdateShaderValue(TimeProperty);

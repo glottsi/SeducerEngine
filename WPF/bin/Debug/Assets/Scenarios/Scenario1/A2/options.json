@@ -4,7 +4,7 @@
     "VideoFilename": "A2choice1.avi"
   },
   {
-    "Label": "-1 HP and continue",
+    "Label": "-1 HP",
     "ScoreAdjustment": {
       "HP": -1,
       "Points": 0
@@ -13,7 +13,7 @@
   },
   {
     "ButtonType": "End",
-    "Label": "game over",
+    "Label": "game over (no ending)",
     "VideoFilename": "A2choice3.avi"
   }
 ]

@@ -7,29 +7,33 @@ namespace WPF
 {
     public partial class WinScreen : UserControl
     {
-        private readonly Storyboard _fadeIn;
-        public WinScreen(string videoPath)
+        public WinScreen(ButtonData buttonData, string videoFilePath)
         {
             InitializeComponent();
 
-            _fadeIn = FindResource("FadeInStoryboard") as Storyboard;
+            // set default message
+            string messageContent = string.IsNullOrEmpty(buttonData.EndScreenMessage) ? "You win :)" : buttonData.EndScreenMessage;
+            DisplayMessage.Content = messageContent;
 
-            Storyboard.SetTarget(_fadeIn, MainGrid);
-
-            MainResources.MainWindow.PlayFile(videoPath, PrevVideoDone);
+            MainResources.MainWindow.PlayFile(videoFilePath, FadeInScreen);
         }
-        
-        private void PrevVideoDone()
+
+        private void FadeInScreen()
         {
-            _fadeIn.Begin();
+            Storyboard fadeIn = FindResource("FadeInStoryboard") as Storyboard;
+            Storyboard.SetTarget(fadeIn, MainGrid);
+            fadeIn.Begin();
             IsEnabled = true;
+        }
+
+        private void ResetToMainMenu()
+        {
+            MainResources.MainWindow.ResetToMainMenu(this);
         }
 
         private void ButtonClicked(object sender, RoutedEventArgs e)
         {
-            MainResources.MainWindow.AddBackground();
-            MainResources.MainWindow.MainPanel.Children.Add(new MainMenu());
-            MainResources.MainWindow.MainPanel.Children.Remove(this);
+            ResetToMainMenu();
         }
     }
 }

@@ -7,27 +7,33 @@ namespace WPF
 {
     public partial class LoseScreen : UserControl
     {
-        public LoseScreen(string videoPath)
+        public LoseScreen(ButtonData buttonData)
         {
             InitializeComponent();
-            
-            MainResources.MainWindow.PlayFile(videoPath, PrevVideoDone);
+
+            // set default message
+            string messageContent = string.IsNullOrEmpty(buttonData.EndScreenMessage) ? "You lose :(" : buttonData.EndScreenMessage;
+            LoseMessage.Content = messageContent;
+
+            MainResources.MainWindow.PlayFile(buttonData.VideoFileLocation, FadeInScreen);
         }
         
-        private void PrevVideoDone()
+        private void FadeInScreen()
         {
             Storyboard fadeIn = FindResource("FadeInStoryboard") as Storyboard;
-            Debug.Assert(fadeIn != null, nameof(fadeIn) + " != null");
             Storyboard.SetTarget(fadeIn, MainGrid);
             fadeIn.Begin();
             IsEnabled = true;
         }
 
+        private void ResetToMainMenu()
+        {
+            MainResources.MainWindow.ResetToMainMenu(this);
+        }
+
         private void ButtonClicked(object sender, RoutedEventArgs e)
         {
-            MainResources.MainWindow.AddBackground();
-            MainResources.MainWindow.MainPanel.Children.Add(new MainMenu());
-            MainResources.MainWindow.MainPanel.Children.Remove(this);
+            ResetToMainMenu();
         }
     }
 }

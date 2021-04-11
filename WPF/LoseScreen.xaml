@@ -25,9 +25,9 @@
             <RowDefinition Height="5*" />
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="1" Grid.Row="1"
+        <Label x:Name="LoseMessage" Grid.Column="1" Grid.Row="1"
                Style="{StaticResource ButtonTextStyle}">
-            You LOSE!
+          
         </Label>
         <Button Grid.Column="1" Grid.Row="3"
                 Style="{StaticResource ButtonStyle}"

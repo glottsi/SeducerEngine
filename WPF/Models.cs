@@ -17,6 +17,7 @@ namespace WPF
     public class ScenarioSchema
     {
         public string Title;
+        public string Subtitle;
         public string Description;
         public ScenarioSettings Settings;
     }
@@ -38,6 +39,7 @@ namespace WPF
         public StoryPath Path;
         public ScoreAdjustment ScoreAdjustment;
         public List<Ending> Endings;
+        public string EndScreenMessage;
     }
 
     public class Ending
@@ -65,5 +67,11 @@ namespace WPF
         public string VideoFileLocation;
         public ScoreAdjustment ScoreAdjustment;
         public List<Ending> Endings;
+        public string EndScreenMessage;
+    }
+
+    public class GameSettings
+    {
+        // not used yet
     }
 }
