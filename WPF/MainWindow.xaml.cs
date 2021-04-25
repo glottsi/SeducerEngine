@@ -8,6 +8,13 @@ using System.Windows.Media;
 
 namespace WPF
 {
+    /* 
+     MainWindow handles most media such as
+        - playing videos and invoking callback when the video is done
+        - background music 
+        - sound effects
+ 
+     */
     public partial class MainWindow
     {
         private readonly DevLogos _devLogos;

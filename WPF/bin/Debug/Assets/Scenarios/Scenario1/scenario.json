@@ -2,11 +2,12 @@
   "Title": "Girl on street",
   "Subtitle": "Chapter 1",
   "Description": "Some text to describe the scenario...",
+  "Image": "bg.png",
+  "IntroVideo": "pre.avi",
   "Settings": {
     "StartingHP": 3,
     "StartingPoints": 0,
     "StartingBranch": "A",
     "StartingPathPosition": 1
   }
- 
 }

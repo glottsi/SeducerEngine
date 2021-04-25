@@ -6,10 +6,10 @@ namespace WPF
 {
     public partial class GameButton : UserControl
     {
-        private readonly Action<ButtonData> _callback;
-        private readonly ButtonData _buttonData;
+        private readonly Action<ButtonSchema> _callback;
+        private readonly ButtonSchema _buttonData;
         
-        public GameButton(string text, ButtonData buttonData, Action<ButtonData> callback)
+        public GameButton(string text, ButtonSchema buttonData, Action<ButtonSchema> callback)
         {
             InitializeComponent();
             _buttonData = buttonData;

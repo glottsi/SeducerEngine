@@ -12,7 +12,6 @@ namespace WPF
     /// </summary>
     public partial class GameSettingsScreen : UserControl
     {
-        private readonly GameSettings _settings;
         private readonly MainMenu _prevMenu;
 
         public GameSettingsScreen(MainMenu prevMenu)

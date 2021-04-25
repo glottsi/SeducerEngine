@@ -5,10 +5,10 @@
       "StartPosition": "2"
     },
     "Label": "go to A2",
-    "VideoFilename": "B2choice1.avi"
+    "VideoFilename": [ "B2choice1.avi" ]
   },
   {
     "Label": "continue",
-    "VideoFilename": "B2choice2.avi"
+    "VideoFilename": [ "B2choice2.avi" ]
   }
 ]

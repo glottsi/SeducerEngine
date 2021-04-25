@@ -7,7 +7,7 @@ namespace WPF
 {
     public partial class WinScreen : UserControl
     {
-        public WinScreen(ButtonData buttonData, string videoFilePath)
+        public WinScreen(ButtonSchema buttonData, string videoFilePath)
         {
             InitializeComponent();
 

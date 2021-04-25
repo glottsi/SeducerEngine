@@ -20,6 +20,8 @@ namespace WPF
         public string Subtitle;
         public string Description;
         public ScenarioSettings Settings;
+        public string Image;
+        public string IntroVideo;
     }
 
     public class ScenarioSettings
@@ -28,6 +30,7 @@ namespace WPF
         public int StartingPoints;
         public string StartingBranch;
         public int StartingPathPosition;
+       
     }
 
     // used to deserialize from json
@@ -35,7 +38,7 @@ namespace WPF
     {
         public ButtonType ButtonType;
         public string Label;
-        public string VideoFilename;
+        public List<string> VideoFilename;
         public StoryPath Path;
         public ScoreAdjustment ScoreAdjustment;
         public List<Ending> Endings;
@@ -44,6 +47,7 @@ namespace WPF
 
     public class Ending
     {
+        public string EndScreenMessage;
         public List<int> WhenPointsAreBetween;
         public string VideoFilename;
     }
@@ -58,16 +62,6 @@ namespace WPF
     {
         public int HP;
         public int Points;
-    }
-
-    public class ButtonData
-    {
-        public ButtonType ButtonType;
-        public StoryPath StoryPath;
-        public string VideoFileLocation;
-        public ScoreAdjustment ScoreAdjustment;
-        public List<Ending> Endings;
-        public string EndScreenMessage;
     }
 
     public class GameSettings

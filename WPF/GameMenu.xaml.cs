@@ -8,6 +8,17 @@ using System.Windows.Media.Animation;
 
 namespace WPF
 {
+    /* 
+     GameMenu handles most game logic such as 
+        - loading videos based on current storypath position
+        - determining ending video to be played on game over
+        - preparing callbacks to invoke after the video is played
+        - building the buttons from our JSON schema
+        - fading in/out the button choices and accepting the user's selection
+
+    A new GameMenu instance is created every gameplay loop (video, choice, reaction video)
+
+     */
     public partial class GameMenu : UserControl
     {
         private readonly string _scenarioPath;
@@ -17,22 +28,29 @@ namespace WPF
         private readonly Storyboard _fadeInStoryboards;
         private readonly Storyboard _fadeOutStoryboards;
 
-        private ButtonData _prevButtonData;
+        private ButtonSchema _prevButtonSchema;
 
         private bool _hasEndingVideo = false;
 
-     
-        public GameMenu(string path, int storyPosition, ButtonData buttonData)
-        {
+        private int _currentlyPlayingVideo = 0;
 
+        public GameMenu(ButtonSchema buttonData)
+        {
             InitializeComponent();
-            string videoPath = buttonData.VideoFileLocation;
+            // load root directory
+            _scenarioPath = MainResources.GetRootDirectory();
+
+            // load current path position (ie 1, 2, 3, -1)
+            _storyPosition = MainResources.GetPathPosition();
+
+            // set default video to play (first video in list)
+            string videoPath = buttonData.VideoFilename[_currentlyPlayingVideo];
 
             // path for the current branch
-            _branchPath = Path.Combine(path, MainResources.GetBranch() + storyPosition.ToString());
+            _branchPath = Path.Combine(_scenarioPath, MainResources.GetBranch() + _storyPosition.ToString());
 
             // if we are at -1 story position or no HP, it's game over
-            if (storyPosition == -1 || isPlayerDead())
+            if (_storyPosition == -1 || isPlayerDead())
             {
                 ShowLoseScreen(buttonData);
                 return;
@@ -58,7 +76,10 @@ namespace WPF
                         _hasEndingVideo = true;
 
                         // set this ending to play after the choice video
-                        endVideoPath = Path.Combine(path, "endings", ending.VideoFilename);
+                        endVideoPath = Path.Combine(_scenarioPath, "endings", ending.VideoFilename);
+
+                        // set the text to display on the ending screen depending on this ending
+                        buttonData.EndScreenMessage = ending.EndScreenMessage;
                         // break on first match
                         break;
                     }
@@ -68,10 +89,10 @@ namespace WPF
                 {
                     // only 1 ending, play it (no point condition)
                     _hasEndingVideo = true;
-                    endVideoPath = Path.Combine(path,"endings", buttonData.Endings[0].VideoFilename);
+                    endVideoPath = Path.Combine(_scenarioPath, "endings", buttonData.Endings[0].VideoFilename);
                 }
           
-
+                
                 afterVideoPlayed = () => ShowWinScreen(buttonData, endVideoPath);
                 // "just in case" there are  no matches
                 if (!_hasEndingVideo || buttonData.Endings.Count == 0)
@@ -80,6 +101,17 @@ namespace WPF
                     ShowWinScreen(buttonData, videoPath);
                     return;
                 }
+            }
+           
+            // see if we have other videos to play after this one
+            if (buttonData.VideoFilename.Count > 1)
+            {
+               
+                // set the callback to invoke after ALL videos are played
+                Action finalCallback = afterVideoPlayed;
+                // set the immidiate callback to play other videos first
+                afterVideoPlayed = ()=>PlayOtherVideosFirst(buttonData.VideoFilename, finalCallback);
+           
             }
 
             _fadeInStoryboards = new Storyboard();
@@ -106,11 +138,7 @@ namespace WPF
 
             _fadeOutStoryboards.Children.Add(fadeOut);
             _fadeOutStoryboards.Children.Add(fadeOut2);
-
-            _scenarioPath = path;
-            _storyPosition = storyPosition;
-
-
+       
             if (!_hasEndingVideo)
             {
                 // if we are not playing the ending video, we must be continuing the game, so add the choice buttons
@@ -121,12 +149,33 @@ namespace WPF
             MainResources.MainWindow.PlayFile(videoPath, afterVideoPlayed);
         }
 
+        private void PlayOtherVideosFirst(List<string> videosToPlay, Action finalCallback) 
+        {
+            // ignore first video in the list (its already been played by the time we get here)
+            _currentlyPlayingVideo += 1;
+            if(_currentlyPlayingVideo == videosToPlay.Count)
+            {
+               
+                // all the videos are done, so we can invoke the final, intended callback
+                finalCallback.Invoke();
+            } else
+            {
+             
+                // set the callback to this function to play other videos first
+                Action nextVideo = () => PlayOtherVideosFirst(videosToPlay, finalCallback);
+            
+                // play the video and re-run this function
+                MainResources.MainWindow.PlayFile(videosToPlay[_currentlyPlayingVideo], nextVideo);
+            }
+            
+        }
+
         private bool isPlayerDead()
         {
             return MainResources.GetHP() < 0;
         }
 
-        private void ShowLoseScreen(ButtonData buttonD)
+        private void ShowLoseScreen(ButtonSchema buttonD)
         {
             // lost the game, show LoseScreen
             var lost = new LoseScreen(buttonD);
@@ -134,15 +183,13 @@ namespace WPF
             MainResources.MainWindow.MainPanel.Children.Remove(this);
         }
 
-        private void ShowWinScreen(ButtonData buttonD, string videoFilepath)
+        private void ShowWinScreen(ButtonSchema buttonD, string videoFilepath)
         {
             // no ending video specified, so just display the win screen after the video played
             WinScreen win = new WinScreen(buttonD, videoFilepath);
             MainResources.MainWindow.MainPanel.Children.Add(win);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
         }
-
-
 
         private void AddButtons()
         {
@@ -174,7 +221,14 @@ namespace WPF
                     List<Ending> endings = new List<Ending>();
 
                     // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
-                    string videoPath = Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition, item.VideoFilename);
+                    List<string> videoPaths = new List<string>() { };
+                    int vidIndx = 0;
+                    foreach (string vidPath in item.VideoFilename)
+                    {
+                        videoPaths.Add(Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition, item.VideoFilename[vidIndx]));
+                        vidIndx += 1;
+                    }
+                  
 
                     // if item.Path is null, we stay on the same branch and advance 1 position (default behavior)
                     if (item.Path != null)
@@ -195,12 +249,11 @@ namespace WPF
                         endings = item.Endings;
                     }
 
-                    // wrap the data in a class we can pass easier
-                    ButtonData buttonData = new ButtonData()
+                    ButtonSchema buttonData = new ButtonSchema()
                     {
                         ButtonType = item.ButtonType,
-                        VideoFileLocation = videoPath,
-                        StoryPath = storyPath,
+                        VideoFilename = videoPaths,
+                        Path = storyPath,
                         ScoreAdjustment = scoreAdjustment,
                         Endings = endings,
                         EndScreenMessage = item.EndScreenMessage
@@ -240,17 +293,17 @@ namespace WPF
             IsEnabled = true;
         }
 
-        private void ButtonClicked(ButtonData buttonData)
+        private void ButtonClicked(ButtonSchema ButtonSchema)
         {
             IsEnabled = false;
 
-            if(buttonData.StoryPath.Branch != MainResources.GetBranch())
+            if(ButtonSchema.Path.Branch != MainResources.GetBranch())
             {
-                MainResources.SetBranch(buttonData.StoryPath.Branch);
-                MainResources.SetPathPosition(buttonData.StoryPath.StartPosition - 1);
+                MainResources.SetBranch(ButtonSchema.Path.Branch);
+                MainResources.SetPathPosition(ButtonSchema.Path.StartPosition - 1);
             }
 
-            _prevButtonData = buttonData;
+            _prevButtonSchema = ButtonSchema;
             _fadeInStoryboards.Stop();
             _fadeOutStoryboards.Begin();
         }
@@ -260,11 +313,11 @@ namespace WPF
             // by default we advance the position by 1
             int nextStoryPosition = MainResources.GetPathPosition() + 1;
 
-            switch (_prevButtonData.ButtonType)
+            switch (_prevButtonSchema.ButtonType)
             {
                 case ButtonType.Default:
-                    MainResources.AdjustHP(_prevButtonData.ScoreAdjustment.HP);
-                    MainResources.AdjustPoints(_prevButtonData.ScoreAdjustment.Points);
+                    MainResources.AdjustHP(_prevButtonSchema.ScoreAdjustment.HP);
+                    MainResources.AdjustPoints(_prevButtonSchema.ScoreAdjustment.Points);
                     break;
                 case ButtonType.End:
                     // an "End" button type will end the game immidiately
@@ -273,8 +326,10 @@ namespace WPF
                 default:
                     break;
             }
-
-            GameMenu nextGameMenu = new GameMenu(_scenarioPath, nextStoryPosition, _prevButtonData);
+            // update the game resources
+            MainResources.SetPathPosition(nextStoryPosition);
+            // create new GameMenu instance
+            GameMenu nextGameMenu = new GameMenu(_prevButtonSchema);
             MainResources.MainWindow.MainPanel.Children.Add(nextGameMenu);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
             MainResources.SetPathPosition(nextStoryPosition);
