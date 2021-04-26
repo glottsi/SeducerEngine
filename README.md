@@ -159,7 +159,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
         "VideoFilename": "great_ending.avi"
       }
     ]
-    "VideoFilename": "choice1.mp4"
+    "VideoFilename": [ "choice1.mp4" ]
   },
 
   // change path to another Branch 
