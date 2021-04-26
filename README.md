@@ -5,6 +5,12 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 
 ## Change notes
 
+### 04/25/21
+  - all 'VideoFilename' attributes on the ButtonSchema (not Endings) is now an array of filenames to play, instead of a single string
+  - ButtonData was removed and replaced with ButtonSchema (they were basically the same anyways)
+  - added an 'Image' and 'IntroVideo' to the Scenario object, so we can define the filenames and types of the video to play and the image to use to represent the scenario directly in the .json file
+  - you can now use EndScreenMessage for a conditional ending 
+
 ### 04/10/21
   - buttons can have an `EndScreenMessage` that will display on the ending screen if that option ends the game. If no message is specified (or if it is null), it will use a default message for that screen.
   - added a game settings screen (no settings yet)
@@ -81,9 +87,9 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 ```
 `/Scenario1` - the folder containing the required data and assets for the entire Scenario. _you can name this folder whatever you want_
 
-`bg.png` -  _don't change the name_ - the image to display on the Scenario select screen.
+`bg.png` - the image to display on the Scenario select screen.
 
-`pre.avi` -  _don't change the name_ - the first video file to play for this scenario.
+`pre.avi` - the first video file to play for this scenario.
 
 `scenario.json` -  _don't change the name_ - a json file containing the scenario Title and Description, as well as the starting Settings for things such as HP and Points.
 
@@ -93,6 +99,8 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
   "Title": "Episode 1",
   "Subtitle": "subtitle for the scenario"
   "Description": "Some text to describe the scenario...",
+  "Image": "bg.png",
+  "IntroVideo": "pre.avi"
   "Settings": {
     "StartingHP": 3,
     "StartingPoints": 0,
@@ -112,15 +120,15 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
    // Default button (advance 1 in the storypath, no point adjustment)
    {
     "Label": "choice 1",
-    "VideoFilename": "choice1.mp4"
+    "VideoFilename": [ "choice1.mp4", "anothervideo.mp4" ]
   },
 
   // End game instantly (immidiately show the Lose screen after playing the choice video)
   {
     "ButtonType": "End",
-    "LoseScreenMessage": "GG"
+    "EndScreenMessage": "GG"
     "Label": "choice 2",
-    "VideoFilename": "choice2.avi"
+    "VideoFilename": [ "choice2.avi" ]
   },
 
   // adjust points when button selected
@@ -130,7 +138,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
       "HP": 0,
       "Points": 1
     },
-    "VideoFilename": "choice1.mp4"
+    "VideoFilename": [ "choice1.mp4" ]
   }
 
   // decide an ending based on the points (play video, then play ending video)
@@ -139,6 +147,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
      "Endings": [
       {
         "WhenPointsAreBetween": [ 0, 3 ],
+        "EndScreenMessage": "game over",
         "VideoFilename": "default_ending.mp4"
       },
       {
@@ -160,7 +169,7 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
       "StartPosition": "1"
     },
     "Label": "jump to branch B1",
-    "VideoFilename": "choice_d.avi"
+    "VideoFilename": [ "choice_d.avi" ]
   }
 ]
 
