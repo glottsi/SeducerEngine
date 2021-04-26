@@ -13,6 +13,7 @@ namespace WPF
         private static string _Branch;
         private static int _PathPosition;
 
+        private static string _rootPath;
         private static string _endingRootPath;
         private static string _endingVideoPath;
 
@@ -117,6 +118,16 @@ namespace WPF
         public static int GetPathPosition()
         {
             return _PathPosition;
+        }
+
+        public static void SetRootDirectory(string path)
+        {
+            _rootPath = path;
+        }
+
+        public static string GetRootDirectory()
+        {
+            return _rootPath;
         }
     }
 }

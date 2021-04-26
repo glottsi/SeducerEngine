@@ -7,7 +7,7 @@ namespace WPF
 {
     public partial class LoseScreen : UserControl
     {
-        public LoseScreen(ButtonData buttonData)
+        public LoseScreen(ButtonSchema buttonData)
         {
             InitializeComponent();
 
@@ -15,7 +15,7 @@ namespace WPF
             string messageContent = string.IsNullOrEmpty(buttonData.EndScreenMessage) ? "You lose :(" : buttonData.EndScreenMessage;
             LoseMessage.Content = messageContent;
 
-            MainResources.MainWindow.PlayFile(buttonData.VideoFileLocation, FadeInScreen);
+            MainResources.MainWindow.PlayFile(buttonData.VideoFilename[0], FadeInScreen);
         }
         
         private void FadeInScreen()

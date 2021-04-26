@@ -1,7 +1,7 @@
 [
   {
     "Label": "continue",
-    "VideoFilename": "A2choice1.avi"
+    "VideoFilename": [ "A2choice1.avi" ]
   },
   {
     "Label": "-1 HP",
@@ -9,11 +9,11 @@
       "HP": -1,
       "Points": 0
     },
-    "VideoFilename": "A2choice2.avi"
+    "VideoFilename": [ "A2choice2.avi" ]
   },
   {
     "ButtonType": "End",
     "Label": "game over (no ending)",
-    "VideoFilename": "A2choice3.avi"
+    "VideoFilename": [ "A2choice3.avi" ]
   }
 ]

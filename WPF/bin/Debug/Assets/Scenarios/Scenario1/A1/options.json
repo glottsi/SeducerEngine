@@ -5,28 +5,29 @@
       "HP": 0,
       "Points": 1
     },
-    "VideoFilename": "A1choice1.avi"
+    "VideoFilename": [ "A1choice1.avi" ]
   },
   {
-    "Label": "-1 HP",
+    "Label": "play choice 2 and choice 3",
     "ScoreAdjustment": {
-      "HP": -1,
+      "HP": 0,
       "Points": 0
     },
-    "VideoFilename": "A1choice2.avi"
+    "VideoFilename": [ "A1choice2.avi", "A1choice3.avi" ]
   },
   {
     "ButtonType": "End",
-    "LoseScreenMessage": "GG",
+    "EndScreenMessage": "GG",
     "Label": "game over (no ending)",
-    "VideoFilename": "A1choice3.avi"
+    "VideoFilename": [ "A1choice3.avi" ]
   },
   {
     "Label": "game over (conditional ending)",
-    "VideoFilename": "A1choice4.avi",
+    "VideoFilename": [ "A1choice4.avi" ],
     "Endings": [
       {
         "WhenPointsAreBetween": [ 0, 3 ],
+        "EndScreenMessage": "bad ending bro",
         "VideoFilename": "badending.avi"
       },
       {
@@ -45,6 +46,6 @@
       "StartPosition": "1"
     },
     "Label": "jump to branch B1",
-    "VideoFilename": "A1choice5.avi"
+    "VideoFilename": [ "A1choice5.avi" ]
   }
 ]

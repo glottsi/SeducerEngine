@@ -5,11 +5,11 @@
       "StartPosition": "3"
     },
     "Label": "go to A3",
-    "VideoFilename": "C1choice1.avi"
+    "VideoFilename": [ "C1choice1.avi" ]
   },
   {
     "Label": "advance to next in C",
-    "VideoFilename": "C1choice2.avi"
+    "VideoFilename": [ "C1choice2.avi" ]
   },
   {
     "Path": {
@@ -17,6 +17,6 @@
       "StartPosition": "1"
     },
     "Label": "go to B1",
-    "VideoFilename": "C1choice3.avi"
+    "VideoFilename": [ "C1choice3.avi" ]
   }
 ]
