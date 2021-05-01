@@ -46,6 +46,14 @@ namespace WPF
         public string EndScreenMessage;
     }
 
+    // used to hold the previous game state, 
+    // in case game ends and player wants to retry from previous choice.
+    public class RestorePoint
+    {
+        public ScenarioSettings ScenarioState;
+        public ButtonSchema LastChoice;
+    }
+
     public class ConditionalVideos
     {
         public List<int> WhenPointsAreBetween;

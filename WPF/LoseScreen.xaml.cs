@@ -10,12 +10,20 @@ namespace WPF
         public LoseScreen(ButtonSchema buttonData)
         {
             InitializeComponent();
-
             // set default message
             string messageContent = string.IsNullOrEmpty(buttonData.EndScreenMessage) ? "You lose :(" : buttonData.EndScreenMessage;
             LoseMessage.Content = messageContent;
 
+            // disable buttons
+            SetButtonsEnabled(false);
+          
             MainResources.MainWindow.PlayFile(buttonData.VideoFilename[0], FadeInScreen);
+        }
+
+        private void SetButtonsEnabled(bool enabled)
+        {
+            QuitButton.IsEnabled = enabled;
+            RetryButton.IsEnabled = enabled;
         }
         
         private void FadeInScreen()
@@ -24,6 +32,8 @@ namespace WPF
             Storyboard.SetTarget(fadeIn, MainGrid);
             fadeIn.Begin();
             IsEnabled = true;
+            // re-enable the buttons
+            SetButtonsEnabled(true);
         }
 
         private void ResetToMainMenu()
@@ -35,5 +45,15 @@ namespace WPF
         {
             ResetToMainMenu();
         }
+        private void RetryButtonClicked(object sender, RoutedEventArgs e)
+        {
+            // create new GameMenu instance with previous game state
+            RestorePoint load = MainResources.RestorePreviousState();
+            DebugFunctions.DEBUG_output_list_of_videos("LOADED RESTORE POINT", load.LastChoice);
+            GameMenu replayChoices = new GameMenu(load.LastChoice);
+            MainResources.MainWindow.MainPanel.Children.Add(replayChoices);
+            MainResources.MainWindow.MainPanel.Children.Remove(this);
+        }
+      
     }
 }

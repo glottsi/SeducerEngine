@@ -8,6 +8,8 @@ namespace WPF
         public static MainWindow MainWindow;
         public static List<bool> Scores;
 
+        private static RestorePoint _restorePoint;
+
         private static int _HP;
         private static int _Points;
         private static string _Branch;
@@ -45,6 +47,30 @@ namespace WPF
 
         }
 
+        // save current points, life, and choices as a restore point to reload from if the game ends.
+        public static void SaveCurrentState(ButtonSchema buttonData)
+        {
+            RestorePoint save = new RestorePoint()
+            {
+                ScenarioState = new ScenarioSettings()
+                {
+                    StartingHP = _HP,
+                    StartingPoints = _Points,
+                    StartingBranch = _Branch,
+                    StartingPathPosition = _PathPosition,
+                },
+                LastChoice = buttonData,
+            };
+            _restorePoint = save;
+        }
+
+        // returns last choice made, and resets points and path values
+        public static RestorePoint RestorePreviousState()
+        {
+            // reset points and branches/paths, etc
+            SetScenarioSettings(_restorePoint.ScenarioState);
+            return _restorePoint;
+        }
 
         public static string GetEndingVideoPath()
         {

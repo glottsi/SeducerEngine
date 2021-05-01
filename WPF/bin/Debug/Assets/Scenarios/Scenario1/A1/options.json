@@ -14,17 +14,6 @@
         "WhenPointsAreBetween": [ 3, 6 ],
         "VideoFilename": [ "A1choice2.avi", "A1choice1.avi" ]
       }
-    ],
-    "Endings": [
-      {
-        "WhenPointsAreBetween": [ 0, 3 ],
-        "EndScreenMessage": "bad ending bro",
-        "VideoFilename": "badending.avi"
-      },
-      {
-        "WhenPointsAreBetween": [ 3, 8 ],
-        "VideoFilename": "goodending.avi"
-      }
     ]
   },
   
