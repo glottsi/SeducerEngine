@@ -1,7 +1,7 @@
 [
   {
-    "Label": "continue",
-    "VideoFilename": [ "A2choice1.avi" ]
+    "Label": "play choice1 and choice3",
+    "VideoFilename": [ "A2choice1.avi", "A2choice3.avi" ]
   },
   {
     "Label": "-1 HP",
