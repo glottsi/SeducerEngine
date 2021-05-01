@@ -8,6 +8,8 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 ### 05/01/2021
   - fixed bug where player could click the hidden buttons while the video was being played
   - choice videos can now be played conditionally based on player's current score
+  - if the application crashes, a file will be created called `CRASH_REPORT.txt` with detailed information such as the stack trace, and a dialog will be shown to the user 
+  - on LoseScreen, player has the option to retry from the last choice
 
 ### 04/25/21
   - all 'VideoFilename' attributes on the ButtonSchema (not Endings) is now an array of filenames to play, instead of a single string
@@ -197,13 +199,13 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
 
 ## Considerations
 
-- After a Default button is selected and video played it adjusts any score values and branch/path, then game advances to the next choice.
-- After an End button is selected and video played, the Game Over screen is shown.
-- If Health reaches 0, game is over.
+- If Health reaches 0, or if the `End` button type is clicked, game is instantly over and player is shown the LoseScreen.
+- on a LoseScreen, player can choose to retry, and it will play the last video and display the previous choices
 - You win the game when there are no more numbered folders to progress to, or if an Ending has been defined in the button's data. 
 - On a win, if there is no ending video defined, the game will play the choice video and then show the Win screen.
 - On a win, if there is only 1 Ending defined, it will play it regardless of the point value.
 - On a win, if there are multiple Endings defined, the player's Point value is used to determine the ending video to play.
+- You can combine conditional choice videos and conditional endings to make unique story endings paths
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
