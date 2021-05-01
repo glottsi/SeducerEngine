@@ -39,10 +39,17 @@ namespace WPF
         public ButtonType ButtonType;
         public string Label;
         public List<string> VideoFilename;
+        public List<ConditionalVideos> Videos;
         public StoryPath Path;
         public ScoreAdjustment ScoreAdjustment;
         public List<Ending> Endings;
         public string EndScreenMessage;
+    }
+
+    public class ConditionalVideos
+    {
+        public List<int> WhenPointsAreBetween;
+        public List<string> VideoFilename;
     }
 
     public class Ending

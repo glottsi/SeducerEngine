@@ -224,16 +224,52 @@ namespace WPF
 
                     // default empty ending list
                     List<Ending> endings = new List<Ending>();
-
-                    // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
+                    // will hold the list of videos to play when the button is pressed
                     List<string> videoPaths = new List<string>() { };
-                    int vidIndx = 0;
-                    foreach (string vidPath in item.VideoFilename)
-                    {
-                        videoPaths.Add(Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition, item.VideoFilename[vidIndx]));
-                        vidIndx += 1;
-                    }
                   
+                    // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
+                    string videoFilepath = Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition);
+
+                    // if we have conditional videos, they take priority over anything in VideoFilename
+                    if (item.Videos != null)
+                    {
+                        // loop through our conditional options
+                        foreach (ConditionalVideos cond in item.Videos)
+                        {
+                            // the first match will be used (so consider the order of endings in the list)
+                            if (MainResources.GetPoints() >= cond.WhenPointsAreBetween[0] && MainResources.GetPoints() <= cond.WhenPointsAreBetween[1])
+                            {
+                                // add these videos to the list to be played
+                                foreach (string vid in cond.VideoFilename)
+                                {
+                                    videoPaths.Add(Path.Combine(videoFilepath, vid));
+                                }
+                                // break on first match
+                                break;
+                            }
+                        }
+                        // if we still have no videos to play, just get the first one from the ConditionalVideos
+                        if (videoPaths.Count == 0)
+                        {
+                          
+                            ConditionalVideos defaultVideos = item.Videos[0];
+                            foreach (string video in defaultVideos.VideoFilename)
+                            {
+                                videoPaths.Add(Path.Combine(videoFilepath, video));
+                            }
+                           
+                        }
+                    }
+                    else
+                    {
+                        // no conditional videos, just play the list of VideoFilename
+                        foreach (string vidPath in item.VideoFilename)
+                        {
+                            videoPaths.Add(Path.Combine(videoFilepath, vidPath));
+                        }
+                    }
+                   
+
 
                     // if item.Path is null, we stay on the same branch and advance 1 position (default behavior)
                     if (item.Path != null)

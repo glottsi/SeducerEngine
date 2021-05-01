@@ -6,7 +6,7 @@
   "IntroVideo": "pre.avi",
   "Settings": {
     "StartingHP": 3,
-    "StartingPoints": 0,
+    "StartingPoints": 4,
     "StartingBranch": "A",
     "StartingPathPosition": 1
   }

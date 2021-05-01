@@ -5,8 +5,29 @@
       "HP": 0,
       "Points": 1
     },
-    "VideoFilename": [ "A1choice1.avi" ]
+    "Videos": [
+      {
+        "WhenPointsAreBetween": [ 0, 3 ],
+        "VideoFilename": [ "A1choice1.avi", "A1choice2.avi" ]
+      },
+      {
+        "WhenPointsAreBetween": [ 3, 6 ],
+        "VideoFilename": [ "A1choice2.avi", "A1choice1.avi" ]
+      }
+    ],
+    "Endings": [
+      {
+        "WhenPointsAreBetween": [ 0, 3 ],
+        "EndScreenMessage": "bad ending bro",
+        "VideoFilename": "badending.avi"
+      },
+      {
+        "WhenPointsAreBetween": [ 3, 8 ],
+        "VideoFilename": "goodending.avi"
+      }
+    ]
   },
+  
   {
     "Label": "play choice 2 and choice 3",
     "ScoreAdjustment": {
