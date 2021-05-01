@@ -34,11 +34,16 @@ namespace WPF
 
         private int _currentlyPlayingVideo = 0;
 
+        private List<GameButton> gameButtons;
+
         public GameMenu(ButtonSchema buttonData)
         {
             InitializeComponent();
             // load root directory
             _scenarioPath = MainResources.GetRootDirectory();
+
+            // holds our buttons so we can iterate and enable/disable
+            gameButtons = new List<GameButton>();
 
             // load current path position (ie 1, 2, 3, -1)
             _storyPosition = MainResources.GetPathPosition();
@@ -193,7 +198,7 @@ namespace WPF
 
         private void AddButtons()
         {
-            List<GameButton> gameButtons = new List<GameButton>();
+            gameButtons = new List<GameButton>();
 
             // load the buttons from json file
             string branchPath = Path.Combine(_branchPath, "options.json");
@@ -259,11 +264,13 @@ namespace WPF
                         EndScreenMessage = item.EndScreenMessage
                     };
                     GameButton gameButton = new GameButton(item.Label, buttonData, ButtonClicked);
+                    // disable the button by default
+                    gameButton.IsEnabled = false;
+                    // add the button to our global button container so we can re-enable them after the video is done
                     gameButtons.Add(gameButton);
-      
                 }
             }
-
+         
             gameButtons.Shuffle();
 
             // making 2 columns with multiple rows for the buttons
@@ -287,16 +294,28 @@ namespace WPF
             HealthAndPositionLabel.Content = $"{MainResources.GetBranch()}{_storyPosition} | HP:{MainResources.GetHP()} Pts:{MainResources.GetPoints()}";
         }
 
+        // iterates through the list of game buttons, and enables/disables them. 
+        private void SetButtonsEnabled(bool enabled)
+        {
+            foreach (GameButton btn in gameButtons)
+            {
+                btn.IsEnabled = enabled;
+            }
+        }
+
         private void AfterChoiceVideoPlayed()
         {
+            // fade in the choice screen
             _fadeInStoryboards.Begin();
+            // enable the buttons so they can be clicked
+            SetButtonsEnabled(true);
             IsEnabled = true;
         }
 
         private void ButtonClicked(ButtonSchema ButtonSchema)
         {
             IsEnabled = false;
-
+            
             if(ButtonSchema.Path.Branch != MainResources.GetBranch())
             {
                 MainResources.SetBranch(ButtonSchema.Path.Branch);
