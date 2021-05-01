@@ -18,22 +18,29 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*" />
+            <RowDefinition Height="4*" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="4*" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="5*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
         <Label x:Name="LoseMessage" Grid.Column="1" Grid.Row="1"
                Style="{StaticResource ButtonTextStyle}">
-          
         </Label>
-        <Button Grid.Column="1" Grid.Row="3"
+        <Button  x:Name="QuitButton"  Grid.Column="1" Grid.Row="3"
                 Style="{StaticResource ButtonStyle}"
                 Click="ButtonClicked">
             <Label Style="{StaticResource ButtonTextStyle}">
                 Back to main menu
+            </Label>
+        </Button>
+        <Button x:Name="RetryButton"  Grid.Column="1" Grid.Row="4"
+                Style="{StaticResource ButtonStyle}"
+                Click="RetryButtonClicked">
+            <Label Style="{StaticResource ButtonTextStyle}">
+                Retry
             </Label>
         </Button>
     </Grid>

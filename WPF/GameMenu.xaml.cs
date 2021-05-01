@@ -38,6 +38,9 @@ namespace WPF
 
         public GameMenu(ButtonSchema buttonData)
         {
+            
+            DebugFunctions.DEBUG_output_list_of_videos("GameMenu Constructor", buttonData);
+           
             InitializeComponent();
             // load root directory
             _scenarioPath = MainResources.GetRootDirectory();
@@ -60,6 +63,8 @@ namespace WPF
                 ShowLoseScreen(buttonData);
                 return;
             }
+            // didn't lost the game, so save restore point
+            MainResources.SaveCurrentState(buttonData);
 
             // callback to invoke after the video is played
             Action afterVideoPlayed = AfterChoiceVideoPlayed;
@@ -180,9 +185,12 @@ namespace WPF
             return MainResources.GetHP() < 0;
         }
 
+
         private void ShowLoseScreen(ButtonSchema buttonD)
         {
             // lost the game, show LoseScreen
+            DebugFunctions.DEBUG_output_list_of_videos("ShowLoseScreen function", buttonD);
+         
             var lost = new LoseScreen(buttonD);
             MainResources.MainWindow.MainPanel.Children.Add(lost);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
@@ -299,6 +307,7 @@ namespace WPF
                         Endings = endings,
                         EndScreenMessage = item.EndScreenMessage
                     };
+                   
                     GameButton gameButton = new GameButton(item.Label, buttonData, ButtonClicked);
                     // disable the button by default
                     gameButton.IsEnabled = false;
@@ -348,17 +357,20 @@ namespace WPF
             IsEnabled = true;
         }
 
-        private void ButtonClicked(ButtonSchema ButtonSchema)
+        private void ButtonClicked(ButtonSchema buttonSchema)
         {
+            DebugFunctions.DEBUG_output_list_of_videos("ButtonClicked", buttonSchema);
+
+            // disable UI
             IsEnabled = false;
-            
-            if(ButtonSchema.Path.Branch != MainResources.GetBranch())
+
+            if(buttonSchema.Path.Branch != MainResources.GetBranch())
             {
-                MainResources.SetBranch(ButtonSchema.Path.Branch);
-                MainResources.SetPathPosition(ButtonSchema.Path.StartPosition - 1);
+                MainResources.SetBranch(buttonSchema.Path.Branch);
+                MainResources.SetPathPosition(buttonSchema.Path.StartPosition - 1);
             }
 
-            _prevButtonSchema = ButtonSchema;
+            _prevButtonSchema = buttonSchema;
             _fadeInStoryboards.Stop();
             _fadeOutStoryboards.Begin();
         }
@@ -385,9 +397,11 @@ namespace WPF
             MainResources.SetPathPosition(nextStoryPosition);
             // create new GameMenu instance
             GameMenu nextGameMenu = new GameMenu(_prevButtonSchema);
+            DebugFunctions.DEBUG_output_list_of_videos("NextVideoStart function, line 398", _prevButtonSchema);
             MainResources.MainWindow.MainPanel.Children.Add(nextGameMenu);
             MainResources.MainWindow.MainPanel.Children.Remove(this);
             MainResources.SetPathPosition(nextStoryPosition);
         }
+
     }
 }

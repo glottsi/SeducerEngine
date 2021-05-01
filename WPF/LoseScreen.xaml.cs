@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,12 +11,20 @@ namespace WPF
         public LoseScreen(ButtonSchema buttonData)
         {
             InitializeComponent();
-
             // set default message
             string messageContent = string.IsNullOrEmpty(buttonData.EndScreenMessage) ? "You lose :(" : buttonData.EndScreenMessage;
             LoseMessage.Content = messageContent;
 
+            // disable buttons
+            SetButtonsEnabled(false);
+          
             MainResources.MainWindow.PlayFile(buttonData.VideoFilename[0], FadeInScreen);
+        }
+
+        private void SetButtonsEnabled(bool enabled)
+        {
+            QuitButton.IsEnabled = enabled;
+            RetryButton.IsEnabled = enabled;
         }
         
         private void FadeInScreen()
@@ -24,6 +33,8 @@ namespace WPF
             Storyboard.SetTarget(fadeIn, MainGrid);
             fadeIn.Begin();
             IsEnabled = true;
+            // re-enable the buttons
+            SetButtonsEnabled(true);
         }
 
         private void ResetToMainMenu()
@@ -35,5 +46,31 @@ namespace WPF
         {
             ResetToMainMenu();
         }
+        private void RetryButtonClicked(object sender, RoutedEventArgs e)
+        {
+            // create new GameMenu instance with previous game state
+            RestorePoint load = MainResources.RestorePreviousState();
+            DebugFunctions.DEBUG_output_list_of_videos("LOADED RESTORE POINT", load.LastChoice);
+            // we only want to show the last video played, not the whole list
+            ButtonSchema loadedState = load.LastChoice;
+            List<string> setupVideo = new List<string>();
+            // if there was more than 1 video played, just play the last video
+            if (loadedState.VideoFilename.Count>1)
+            {
+                // only add the last video to the list
+                setupVideo.Add(loadedState.VideoFilename[loadedState.VideoFilename.Count - 1]);
+            } else
+            {
+                // there's only one anyways, so just pass it along
+                setupVideo = loadedState.VideoFilename;
+            }
+            // add the setup video to our loaded state
+            loadedState.VideoFilename = setupVideo;
+         
+            GameMenu replayChoices = new GameMenu(loadedState);
+            MainResources.MainWindow.MainPanel.Children.Add(replayChoices);
+            MainResources.MainWindow.MainPanel.Children.Remove(this);
+        }
+      
     }
 }
