@@ -38,6 +38,7 @@ namespace WPF
 
         public GameMenu(ButtonSchema buttonData)
         {
+            
             DebugFunctions.DEBUG_output_list_of_videos("GameMenu Constructor", buttonData);
            
             InitializeComponent();

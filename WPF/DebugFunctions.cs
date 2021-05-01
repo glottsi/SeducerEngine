@@ -44,5 +44,17 @@ namespace WPF
             }
             Debug.WriteLine(videos_to_play, label);
         }
+
+        public static int CRASH_PROGRAM()
+        {
+            int num1 = 0;
+            int num2 = 0;
+            return Fraction(num1, num2);
+        }
+
+        private static int Fraction(int num1, int num2)
+        {
+            return num1 / num2;
+        }
     }
 }
