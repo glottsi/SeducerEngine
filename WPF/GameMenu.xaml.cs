@@ -34,11 +34,16 @@ namespace WPF
 
         private int _currentlyPlayingVideo = 0;
 
+        private List<GameButton> gameButtons;
+
         public GameMenu(ButtonSchema buttonData)
         {
             InitializeComponent();
             // load root directory
             _scenarioPath = MainResources.GetRootDirectory();
+
+            // holds our buttons so we can iterate and enable/disable
+            gameButtons = new List<GameButton>();
 
             // load current path position (ie 1, 2, 3, -1)
             _storyPosition = MainResources.GetPathPosition();
@@ -193,7 +198,7 @@ namespace WPF
 
         private void AddButtons()
         {
-            List<GameButton> gameButtons = new List<GameButton>();
+            gameButtons = new List<GameButton>();
 
             // load the buttons from json file
             string branchPath = Path.Combine(_branchPath, "options.json");
@@ -219,16 +224,52 @@ namespace WPF
 
                     // default empty ending list
                     List<Ending> endings = new List<Ending>();
-
-                    // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
+                    // will hold the list of videos to play when the button is pressed
                     List<string> videoPaths = new List<string>() { };
-                    int vidIndx = 0;
-                    foreach (string vidPath in item.VideoFilename)
-                    {
-                        videoPaths.Add(Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition, item.VideoFilename[vidIndx]));
-                        vidIndx += 1;
-                    }
                   
+                    // the video path is the CURRENT BRANCH PATH, even if the branch will be changed
+                    string videoFilepath = Path.Combine(_scenarioPath, storyPath.Branch + storyPath.StartPosition);
+
+                    // if we have conditional videos, they take priority over anything in VideoFilename
+                    if (item.Videos != null)
+                    {
+                        // loop through our conditional options
+                        foreach (ConditionalVideos cond in item.Videos)
+                        {
+                            // the first match will be used (so consider the order of endings in the list)
+                            if (MainResources.GetPoints() >= cond.WhenPointsAreBetween[0] && MainResources.GetPoints() <= cond.WhenPointsAreBetween[1])
+                            {
+                                // add these videos to the list to be played
+                                foreach (string vid in cond.VideoFilename)
+                                {
+                                    videoPaths.Add(Path.Combine(videoFilepath, vid));
+                                }
+                                // break on first match
+                                break;
+                            }
+                        }
+                        // if we still have no videos to play, just get the first one from the ConditionalVideos
+                        if (videoPaths.Count == 0)
+                        {
+                          
+                            ConditionalVideos defaultVideos = item.Videos[0];
+                            foreach (string video in defaultVideos.VideoFilename)
+                            {
+                                videoPaths.Add(Path.Combine(videoFilepath, video));
+                            }
+                           
+                        }
+                    }
+                    else
+                    {
+                        // no conditional videos, just play the list of VideoFilename
+                        foreach (string vidPath in item.VideoFilename)
+                        {
+                            videoPaths.Add(Path.Combine(videoFilepath, vidPath));
+                        }
+                    }
+                   
+
 
                     // if item.Path is null, we stay on the same branch and advance 1 position (default behavior)
                     if (item.Path != null)
@@ -259,11 +300,13 @@ namespace WPF
                         EndScreenMessage = item.EndScreenMessage
                     };
                     GameButton gameButton = new GameButton(item.Label, buttonData, ButtonClicked);
+                    // disable the button by default
+                    gameButton.IsEnabled = false;
+                    // add the button to our global button container so we can re-enable them after the video is done
                     gameButtons.Add(gameButton);
-      
                 }
             }
-
+         
             gameButtons.Shuffle();
 
             // making 2 columns with multiple rows for the buttons
@@ -287,16 +330,28 @@ namespace WPF
             HealthAndPositionLabel.Content = $"{MainResources.GetBranch()}{_storyPosition} | HP:{MainResources.GetHP()} Pts:{MainResources.GetPoints()}";
         }
 
+        // iterates through the list of game buttons, and enables/disables them. 
+        private void SetButtonsEnabled(bool enabled)
+        {
+            foreach (GameButton btn in gameButtons)
+            {
+                btn.IsEnabled = enabled;
+            }
+        }
+
         private void AfterChoiceVideoPlayed()
         {
+            // fade in the choice screen
             _fadeInStoryboards.Begin();
+            // enable the buttons so they can be clicked
+            SetButtonsEnabled(true);
             IsEnabled = true;
         }
 
         private void ButtonClicked(ButtonSchema ButtonSchema)
         {
             IsEnabled = false;
-
+            
             if(ButtonSchema.Path.Branch != MainResources.GetBranch())
             {
                 MainResources.SetBranch(ButtonSchema.Path.Branch);

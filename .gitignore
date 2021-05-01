@@ -14,3 +14,9 @@ WPF/packages/*
 
 WPF/bin/Debug/Assets/*
 
+WPF/WPF.csproj
+WPF/Properties/AssemblyInfo.cs
+WPF/MainWindow.xaml
+WPF/bin/Debug/Untitled Jinnytty Game.exe.config
+WPF/bin/Debug/Untitled Jinnytty Game.exe
+WPF/MainWindow.xaml
