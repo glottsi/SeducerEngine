@@ -5,6 +5,10 @@ I forked this from [https://github.com/WWRS/SeducerEngine](https://github.com/WW
 
 ## Change notes
 
+### 05/01/2021
+  - fixed bug where player could click the hidden buttons while the video was being played
+  - choice videos can now be played conditionally based on player's current score
+
 ### 04/25/21
   - all 'VideoFilename' attributes on the ButtonSchema (not Endings) is now an array of filenames to play, instead of a single string
   - ButtonData was removed and replaced with ButtonSchema (they were basically the same anyways)
@@ -140,6 +144,21 @@ All Scenarios are contained within their own folders in the `Assets/Scenarios`. 
     },
     "VideoFilename": [ "choice1.mp4" ]
   }
+  
+  // play a choice video based on player's current points (can be combined with conditional endings)
+  {
+    "Label": "play conditional choice video",
+    "Videos": [
+      {
+        "WhenPointsAreBetween": [ 0, 3 ],
+        "VideoFilename": [ "A1choice1.avi", "A1choice2.avi" ]
+      },
+      {
+        "WhenPointsAreBetween": [ 3, 6 ],
+        "VideoFilename": [ "A1choice2.avi", "A1choice1.avi" ]
+      }
+    ]
+  },
 
   // decide an ending based on the points (play video, then play ending video)
   {
